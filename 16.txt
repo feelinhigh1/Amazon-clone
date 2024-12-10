@@ -1,0 +1,753 @@
+---------Testing----------
+
+We will learn how to test our code.
+
+
+Easiest way to test 
+___________________
+
+Open the website and try out the code -> Manual Testing 
+
+
+Disadvantages of Manula Testing
+________________________________
+
+1. Hard to test every situation
+2. Hard to re-test 
+
+
+To solve this 2 problems we are gonna learn another way of testing called Automated Testing.
+
+
+Automated Testing
+___________________
+
+It means using code to test code.
+
+Instead of testing code ourselves we will command the computer to do it.
+
+
+
+So, lets go ahead and create our 1st automated test.
+
+
+
+scripts-> utils -> money.js 
+
+Here, lets test the formatCurrency 
+
+To create an automated test. We are just gonna write some code to test the function. So, lets create a folder to group all of our test code together.
+
+So, 
+
+tests -> moneyTest.js
+
+1st we import formatCurrency. So, we can test it.
+
+
+import {formatCurrency} from '../scripts/utils/money.js';
+
+As, a reminder formatCurrency takes a number in Cents and converts to dollars.
+
+So, lets test the function using the number 2095 as an eg:
+
+if (formatCurrency(2095) === '20.95') {
+  console.log('passed');
+}
+else {
+  console.log('failed');
+}
+
+So, this is our 1st automated test.
+
+Now, lets run this test code. but remonder we can run JS file directly. We need to load the js file using an html file. So , lets create an HTML file to run the test.
+
+tests-> tests.html
+
+When we open the tests.html with live serverin the console we see passed.
+
+
+
+In manual testing:
+
+Its hard to test every situation. So, in formatCurrency we want to check in different situations or with different numbers. We can add just some more tests at the bottom.
+
+if (formatCurrency(0) === '0.00') {
+  console.log('passed');
+}
+else {
+  console.log('failed');
+}
+
+if (formatCurrency(500.5) === '5.01') {
+  console.log('passed');
+}
+else {
+  console.log('failed');
+}
+
+The both situation will be passed.
+
+
+Q. How many test cases should we have?
+->
+
+2 Types of Test Cases 
+______________________
+
+1. Basic test cases
+= tests if the code is working or not.
+The 1st case with formatCurrency(2095) is a basic test case.
+
+2. Edge cases 
+= test with values that are tricky 
+The 2nd case and 3rd case are Edge cases as the number is 0 which is neither negative nor positive and another is the decimal value 
+
+
+Try to test something different in each test case 
+
+
+
+
+
+Now, lets talk about the 2nd Disadvantage of manual testing.
+
+Its hard to re-test.
+Automated test also solves the problem.
+
+lets say we change the formatCurrency in the money.js file. With manula testing we should have to gpo and check everything one by one.
+
+But with automated testing we can just use the moneyTest,js file. And will instantly retest all of the cases.
+
+If one of the test fails. We dont know which failed. So, we will give each test a name.
+
+
+moneyTest.js
+
+console.log('converts cents into dollar');
+
+and similarly for other 2 tests 
+
+console.log('works with 0');
+
+console.log('rounds upto the nearest cent');
+
+NOw, each of the test case has a name above it.
+
+
+
+ext, another thing we do while naming our tests is to group related test together. 
+
+This test case are for formatCurrency function. So, we will group these together and give it a name
+
+Group of related tests = test suite 
+
+
+console.log('Test Suite : formatCurency')
+
+So, this is how we name our test and group our test.
+
+And we have created our 1st set of automated test.
+
+
+
+
+
+
+Next, we are gonna learn how to use Testing framework to write automated tests.
+
+
+Testing framework
+___________________
+
+Q. So, what is a testing framework?
+-> external library that helps us write test easier 
+
+moneyTest.js
+______________
+
+In our test we need to do several things 
+
+1. create test suite
+2. create tests 
+3. compare the values and display result
+
+So, a testing framework hepls us do all of the above automatically and gives us many other features.
+
+So, now lets learn our 1st testing framework.
+
+In this course we are gonna use the popular testing framework called jasmine.
+
+Most testing frameworks are similar 
+
+Other testing frameworks: Jest (for ReactJS), MochaJS
+
+
+
+Jasmine Testing Framework:
+
+https://github.com/jasmine/jasmine/releases/tag/v5.1.1
+
+So, we download it and add it to the amazon-project and rename the folder to -> tests-jasimine : to make it clear this folder contains test with jasmine.
+
+Now, we have jasmine inside of our project. So, inside the 
+tests-jasimne -> lib 
+we have some js files for the jasmine testing framework. 
+
+So, this is the another way to load the external library into our project. we can just download all the code and keep in the project. And, this is useful if the external libraries have lot of files. 
+
+
+Now, that we load jasmine into our project. Lets learn how to use it. jasmine has a documentation page that shows you how to use the testing framework.
+
+Jasmine documnetation -> https://jasmine.github.io/api/5.1/global
+
+
+
+Run tests using Jasmine
+____________________________
+
+tests-jasmine -> specRunner.html
+
+So, this file loads all of the tests. So, this does the same thing as tests.html
+
+In jasmine spec is another name for test.
+
+So, lets rename it to tests.html so we can match with what we had before and compare the two.
+
+Now, we will just open the tests-jasmine -> tests.html with live server.
+
+
+Above we have 5 dots (that means we ran 5 tests ) and green colour means all of them passed.
+
+And down, each test has a green dot. And, we also notice each dot has a test name side of it which tells what test does. and also has a test suite.
+
+So, a testing framework helps us do all the things that we were doing before.
+
+
+
+Write tests using Jasmine 
+____________________________
+
+tests-jasmine -> specRunner.html
+
+We are gonna remove the example code provided by jasmine
+-> the 4 bottom script tags will be removed.
+
+And,
+
+tests-jasmine -> src 
+tests-jasmine -> spec
+
+folders are also removed 
+
+BUt make sure we keep the lib folder because it contains the code for Jasmine.
+
+And, inside tests-jasmine we are gonna create a new file for our tests. 
+
+Lets say we are testing moneyTest.js again
+
+Now, lets create the same test that we had before.
+
+
+First we import formatCurrency :
+
+import {formatCurrency} from '../scripts/utils/money.js';
+
+Then, in jasmine to create a test suite we are gonna call a function called describe()
+
+decribe() -> provided by jasmine and creates a test suite.
+
+To give test suite a name:
+
+describe('Test Suite : formatCurency')
+
+Now, we are gonna add some tests to the test suite.
+
+To do that we are gonna give descibe the 2nd parameter which is a function.
+
+describe('Test Suite : formatCurency', () => {
+
+})
+
+to create a test we will use another function called it().
+
+it()-> is another function provided by jasmine and this creates a test. 
+
+So, lets give test a name so we know what it is doing. To name the test we will give it() a string
+
+it('converts cents into dollar')
+
+And now, we are gonna add some code into our tests. To do that in jasmine. We are gonna give it() 2nd parameter which is another function.
+
+it('converts cents into dollar', () => {
+
+})
+
+In Jasmine, instead of creating an if statement and diplaying the result ourselives. Jasmine provides another function to do all of those. And that function is called expect().
+
+expect() -> lets us compare value to another value.
+
+Eg:
+
+expect(formatCurrency(2095))
+
+And, now to comapre this value to another value expect gives us an object and the object has many methods that we can use to do comparisions. So, one of the moethod that we can use in this objects is .toEqual() 
+
+And inside the brackets we will put another value that we want to compare to. So, we want it to compare to '20.95'
+
+expect(formatCurrency(2095)).toEqual('20.95');
+
+This checks if the value is equal to 20.95 and then displays the result in the page. 
+
+So, it does everything as before except with one line of code.
+
+So, the final code looks like:
+
+describe('Test Suite : formatCurency', () => {
+  it('converts cents into dollar', () => {
+    expect(formatCurrency(2095)).toEqual('20.95');
+  });
+  it('..',()=>{
+    ...
+  });
+  ....
+})
+
+So, we created our 1st test suit and test using Jasmine. 
+
+So, to run we will run the :
+
+jasmine-tests -> tests.html file 
+
+before that we will load the:
+
+jasmine-tests -> moneyTest.js file in the tests.html file.
+
+
+
+
+If one of our test is failed, it will show the details of the failing test.
+
+So, it will tells us test suite name and the test name that failed and it will also tell us the 2 values that are not equal to each other and will also tell us where the test failed.
+
+So, jasmine gives us a lot of details on where a test failed to help us fix an issue.
+
+
+The testing framework gives ua a bunch of framework such as describe(), it(), expect() and we use this function to create a test.
+
+This function have a lot of feature inside them. They do all of the setup for us and also display the test in a nice web page for us. 
+
+Also, we can use describe() inside describe() 
+
+This helps us organize our test further.
+
+So, now lets save our changes to git.
+
+
+
+
+
+
+Now, lets test a different function using jasmine
+
+data -> cart.js 
+
+Inside the file we have a function called addToCart. 
+
+We are gonna create a test for addToCart function.
+
+1st, since this function is in a different file. We will create a new test file. 
+
+test-jasmine -> cartTest.js
+
+And, to better organize our test files we usually try to match the folder structure of the code.
+
+For eg, in our code money.js is in inside utils folder. So, inside our tests-jasmine we should also create a utils folder and put the file inside.
+
+Similarly for cart.js file as well
+
+test-jasmine -> data -> cartTest.js
+
+We created a data folder and moved cartTest.js inside the data folder.
+
+
+cartTest.js
+
+import { addToCart } from "../../data/cart.js";
+
+
+describe('Test Suite: addToCart', ()=>{
+  
+});
+
+So, lets see cart.js to see what kind of test we should add.
+
+
+Inside addToCart we notice that in this function it uses the if statement.
+
+The best practice in testing is to test each condition of an if-statement 
+
+This is known as test coverage 
+
+Test coverage -> how much of the code is being tested. 
+best practice is we try to maximize test coverage.
+
+
+
+So, for this if statement we will create a test for 1st condition which is when product is already on the cart and then we will create a test for else condition when product is not on the cart.
+
+
+
+describe('Test Suite: addToCart', ()=>{
+  it('adds an existing product to the cart', ()=>{
+
+  });
+
+  it('adds a new product to the cart', ()=>{
+    
+  })
+});
+
+
+This are the 2 test that we need for the 2 conditions of the if statement.
+
+
+
+Lets actually start with adding the new product in the cart. 
+
+Unlike the formatCurrency, addToCart doesn't return a value. So, we can't compare it to another value using expect. Instead we are gonna call addToCart to modify the cart and then check if this cart looks correct.
+
+To do that we will call the function:
+the function takes one string that is productId. And, to find the productId that we can test with. So, data-> products.js file and inside here we have list of products and we just take one of the productId and use in the test.
+
+it('adds a new product to the cart', ()=>{
+  addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+});
+
+So, this will add this productId to the cart. And, now to check if this code is working correctly. We are gonna check what the cart looks like. So,1st we need to import the cart.
+
+And, then in the above code.
+
+1st lets check if the cart length is correct.
+
+So, if we assume we start with a empty cart when we add a product the cart.length should be 1. So, we can compare these two values cart.length and 1.
+
+So, to compare values we are gonna use the function expect.
+
+expect(cart.length).toEqual(1);
+
+Now, we will run the test.
+
+before that we will add the script file for cartTest.js in the tests.html file.
+
+Now, it will add 2 more tests and the test that we just created should fail.
+
+So, it is telling us cart.length is not equal to 1. So, why is this happening 
+
+cartTest.js
+_____________
+
+In here we assumed, the cart to start as empty and if we add a product cart.length will be 1. However the cart doesn't start as empty. In cart.js we are loading the cart from localStorage.If there is nothing in the cart we use default storage. So, our starting cart depends on what is in our local storage and this is the big problem when testing because localStorage can change. If there is empty cart saved in localStorage then the test will pass. But, if there is not empty cart in localStorage it won't pass. So, this is called flaky test.
+
+Flaky Test -> test that sometimes passes and sometimes fails
+
+Now, to solve these we are gonna use a feature of jasmine called Mocks.
+
+Mocks -> let us replace a method with a fake version and then we can make fake version do anything that we want.
+
+For Eg:
+
+When we load the cart from localstorage we are using getItem. So, we can use a mock to create a fake version of getItem and then we make this fake version do anything that we want and turn into an empty array. 
+
+So, let create our 1st mock. 
+
+cartTest.js
+_____________
+
+At the top of the test:
+
+We will create a mock using the another function of jasmine called spyOn();
+
+And we will give spyOn 2 parameters. The 1st one is the object that we want to mock. In our case its localStorage. So,
+
+spyOn(localStorage,)
+
+And then we will give it a string and the string will be the method that we want to mock. In our case want to mock the getItem method. So,
+
+spyOn(localStorage,'getTtem');
+
+So, this will replace localStorage.getItem with a fake version and we can make this fake version do anything we want. To do that spyOn gives us an object. And, the object has the property that we can use.So,
+
+spyOn(localStorage,'getTtem').and;
+
+This is also an object and this object has an object called callFake().So,
+
+spyOn(localStorage,'getTtem').and.callFake();
+
+So, dont worry about all the dots here. Jasmine just oragnizes the code so that it reads like english.
+
+So, we are spying on localStorage.getItem and call fake. So, next we will give callFake a function. And, this function is what we want getItem to do. So, we are ooverwriting the original getItem with whatever is inside the function.So, earlier we said we want getItem to return the empty array in this test. So, inide the function:
+
+
+spyOn(localStorage,'getTtem').and.callFake(()=>{
+  return JSON.stringify([]);
+});
+
+Now, remember localStorage only supports strings. So, we need to return this as strings. To do that we used the code: JSON.stringify
+
+And below, the function we will console.log it
+
+console.log(localStorage.getItem('cart'));
+
+Now, in the page if we open the console. LocalStorage.getItem is no longer loading from the actual localStorage. Its giving us empty array everytime. 
+
+So, now we have mocked the getItem method.
+
+However we are still failing the test.
+
+cartTest.js
+_____________
+
+We are mocking localStorage.getItem but notice above, we import the cart at the top. So, the order of the code matters. First we load the cart from localStorage and after we are mocking localStorage.getItem. So, the cart is already loaded at this point. And, this code doesn't have the effect that we want. 
+
+So, one way to solve is after we mock localStorage we should reload the cart. So, inside:
+
+cart.js
+_________
+
+To reload the cart we need to reload the code.
+
+So, we will create a function to rerun the code:
+
+export let cart;
+
+loadFromStorage();
+
+export function loadFromStorage() {
+  cart = JSON.parse(localStorage.getItem('cart'));
+  if(!cart) {
+    cart = [{
+      productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+      quantity: 2,
+      deliveryOptionId : '1'
+    },{
+      productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+      quantity: 1,
+      deliveryOptionId : '2'
+    }]
+  }
+}
+
+
+cartTest.js
+_____________
+
+After we mock the localStorage.getItem we will reload the cart using the function. 
+
+First we will import loadFromStorage.
+
+Here, after we mock localStorage.getItem we will call the loadFromStorage function.
+
+it('adds a new product to the cart', ()=>{
+    spyOn(localStorage,'getItem').and.callFake(()=>{
+      return JSON.stringify([]);
+    });
+    loadFromStorage();
+    addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+    expect(cart.length).toEqual(1);
+});
+
+So, this time we mock localStorage.getItem first to return an empty array. And, then when we reload the cart the cart will be empty. And, now in our test when we add product to an empty cart the cartlength will be 1. So, the test will pass.
+
+
+
+cart.js
+_________
+
+In addToCart function we see that we are saving the cart in the localStorage. So, this is gonna call localStorage.setItem. However, we don't want to save it in localStorage because it is just a test code. We dont want our test code to modify localStorage. To prevent this we are also gonna mock localStorage.setItem.
+
+So,
+
+spyOn(localStorage, 'setItem')
+
+Remember the order of the code matters. So, we want to mock localStorage.setItem first and then we call addToCart. So, now setItem will be replaced with a fake version. And, this will no longer save to localStorage.
+
+spyOn has another useful feature: spyOn() records every time a method is used. 
+
+For eg: 
+what if we want to make sure that addToCart saves the cart to localStorage at the end. In our test setItem is mocked. So, we cant check whats inside localStorage. Instead we can just check if addToCart calls setItem at some point. To check if setItem was called:
+
+expect()
+
+And give it the method that we mocked which is localStorage.setItem 
+
+expect(localStorage.setItem)
+
+expect gives us an object and thgis object has many useful methods to check stuffs like .toEqual 
+
+So, another method we get from expect is:
+
+.toHaveBeenCalledTimes() 
+
+This method checks how many times localStorage.setitem was called in the code above . So, we expect it to be called 1 time so we give it 1.
+
+expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+
+SO, keep in mind this only works if this method has been mocked with spyOn.
+
+it('adds a new product to the cart', ()=>{
+    spyOn(localStorage,'setItem');
+    spyOn(localStorage,'getItem').and.callFake(()=>{
+      return JSON.stringify([]);
+    });
+    loadFromStorage();
+    addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+    expect(cart.length).toEqual(1);
+    expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+    expect(cart[0].productId).toEqual('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+    expect(cart[0].quantity).toEqual(1);
+  })
+
+We will see that all of the test passed.
+
+Each test can have multiple expectations and the test will only pass if all of its expectations pass. 
+
+
+Now, we will go to the 1st test:
+
+it('adds an existing product to the cart', ()=>{
+  spyOn(localStorage, 'setItem');
+  spyOn(localStorage, 'getItem').and.callfake(()=>{
+    return JSON.stringify([{
+      productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+      quantity : 1,
+      deliveryOptionId: '1'
+    }]);
+  })
+  loadFromstorage();
+
+  addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+  expect(cart.length).toEqual(1);
+  expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+  expect(cart[0].productId).toEqual('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+  expect(cart[0].quantity).toEqual(1);
+});
+
+jun product add garnu cha tyo pailei dekhi cart ma huna parcha 
+
+tyo garna lai feri localStorage.getItem lai mock garnu parcha 
+
+Ani yo pali setup garda cart ma product pailei rakhcham empty cart ko satta 
+
+Aba hamle localStorage.getItem garda esle hamlai paila 
+
+[{
+  productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+  quantity : 1,
+  deliveryOptionId: '1'
+}]
+
+yo array dincha hamro starting cart bhanera 
+
+ani tespachi hamle reload garnu parcha localStorage using loadFromStorage();
+
+cart.length j bhaye ni 1 nei huncha kina bhanda kheri hamle pailei cart ma bhako product add gariracham ani tya quantity chai increase hune ho.
+
+localStorage.setItem pani 1 choti matra call garne ho.
+
+Ani cart ko 1st item ko productId pani same nei hune ho 
+
+last ko test ra aaile ko test ma farak bhaneko last ko expectation matra ho:
+
+expect(cart[0].quantity).toEqual(2);
+
+Thats it we created a test for addToCart function.
+
+
+
+We have been only testing single functions like formatCurrency and addToCart
+
+and, this are called unit Tests.
+
+Unit Tests = testing 1 piece of the code. 
+
+
+Q. what if we want to test the whole page or the whole part of the page?
+-> This requires more complicated test aclled integration test
+
+Integration Test = tests many units/pieces of code working together
+
+
+scripts-> checkout -> orderSummary.js
+
+Here, we are gonna check the renderOrderSummaryFunction.
+
+It uses many other functions and libraries to create the page.
+
+
+
+
+
+
+tests-jasmine ->checkout -> orderSummarytest.js
+
+
+
+import {renderOrderSummary} from "../../scripts/checkout/orderSummary";
+
+
+decsribe('Test Suite: renderOrderSummary',()=>{
+  it('displays the cart',()=>{
+    document.querySelector('.js-test-container').innerHTML = `<div class="js-order-summary"></div>`
+    spyOn(localStorage,'getItem').and.callFake(()=>{
+      return JSON.stringify([{
+        productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity : 2,
+        deliveryoptionid : '1'
+      },{
+        productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+        deliveryOptionId : '2' 
+      }]);
+    });
+    loadFromStorage();
+  })
+})
+
+Q. What test cases should we create?
+-> When we are testing a page, 2 things to test:
+i. How the page looks 
+ii. how the page behaves.
+
+
+document.querySelector('.js-test-container').innerHTML = `<div class="js-order-summary"></div>`
+-> This code takes html and puts it inside test container.
+
+
+
+spyOn(localStorage,'getItem').and.callFake(()=>{
+return JSON.stringify([{
+  productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+  quantity : 2,
+  deliveryoptionid : '1'
+},{
+  productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+  quantity: 1,
+  deliveryOptionId : '2' 
+}]);
+});
+loadFromStorage();
+
+-> We mocked the localStorage.getItem and gave it the default cart 
+
+
+
+Ater this the test started showing:
+
+Error during loading: Cannot set properties of null (setting 'innerHTML') in http://127.0.0.1:5501/scripts/checkout/orderSummary.js line 111
+
+
+SO, we skipped it.
+
+
+

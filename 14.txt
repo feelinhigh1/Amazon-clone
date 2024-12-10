@@ -1,0 +1,753 @@
+Modules
+__________
+
+Modules is a better way to organize our code.
+
+lets look at a problem that we have in our current code. 
+
+In our script text 
+Rightnow we are using 3 script tags to use all of our code.
+
+<script src="data/cart.js"></script>
+<script src="data/products.js"> </script>
+<script src="scripts/amazon.js"></script>
+
+1. This is basically combining all the files together into a big file.
+2. Run all the code 
+
+There is a big problem using script tags like this.
+
+
+This can cause naming conflicts.
+
+In cart.js we created a variable called cart. Now, this means we can't use variable "cart" in any other files.
+
+If we have the cart variable in another js file then the website will stop working. In console it will show us error saying: Identifier 'cart' has already been decleared.
+
+Now, we can't have 2 variables with the same name in JS and this causes an error and causes our website to break.
+
+So, this is called an naming conflict when we have the two variables with the same name.
+
+
+
+So, the big problem with script tags is that which variables have been created in other files and is very easy to accidently create a naming conflict. So, thats the problem with using the name tags like in the above and running our file one at a time.
+
+
+Q. How can we solve the above problem?
+-> Using the feature of JS called modules.
+
+So, a module basically contains a variable inside a file. So, now this variable is not gonna cause conflicts with anything outside the file.
+For eg:
+
+In our amazon project, we created a variable called cart and we want the variable to contaion in the cart.js file. So, that it doesn't conflict with the cart variable in the another file.So,now we can do this with a module.
+
+
+
+Lets, learn how to create our 1st module.
+
+amazon.html
+
+To simply create the module we are gonna delete the script tag data/cart.js
+
+
+Create a module 
+________________
+
+1. Create a file 
+2. Don't load the file with <script>
+
+By doing this any variables we create inside the file,will be contained inside the file and won,t cause naming conflict.
+
+And, basically that is how we create a module.
+
+
+
+So, now we run into another problem:
+
+'cart' doesn't exist anymore
+We can't access "cart" from the outside.
+
+
+
+Now, we are gonna learn how to get a variable out of a file 
+
+
+Get a variable out of a File 
+______________________________
+
+1. Add type="module" attribute 
+2. Export 
+3. Import 
+
+
+1. Add type="module" attribute
+-> amazon.html
+
+<script type="module" src=""scripts/amazon.js></script>
+
+Lets this file get the variables out of other files
+
+
+2. Export 
+-> cart.js
+
+And now we are gonna choose which variables can be accessed outside of this file 
+
+export const cart = [];
+
+Now, this variable can be used outside of the cart.js file
+
+3. Import
+-> amazon.js
+
+import {cart} from '../data/cart.js';
+
+.. means to go out of the current folder and then to data folder then to cart.js file 
+
+So, these are the 3 steps to get a variable out of a module.
+
+First, we type type="module" attribute to enable the feature and then we export the variable that we want and finally we import the variable where we need them
+
+
+Two important things that we want to know of modules
+_____________________________________________________
+
+1. Put all the imports at the top of the file 
+2. We need to use Live server 
+
+
+
+Benefits of Modules
+____________________
+
+1. Helps us avoid naming conflicts 
+2. Don't have to worry about the order of files
+-> before we had to load cart.js file 1st because we needed cart variable to be created and then we can use it on amazon.js. So, our order of the script tags really mattered and it becomes really hard when we have lot of files. But now with modules we can just import the variables that we need and we don't have to worry about the order that we are loading our files.
+
+
+
+Now, lets use modules in many places.
+
+We will start by deleting:
+
+<script src="data/products.js"> </script>
+
+And, we already have 
+
+<script type="module" src="scripts/amazon.js"></script>
+
+products.js
+____________
+
+export products = [];
+
+
+amazon.js
+____________
+
+import {products} form '../data/products.js'
+
+
+So, thats how we convert products.js into a module as well
+
+
+
+<script type="module" src="scripts/amazon.js"></script>
+
+Q. Should we delete the above script tag as well?
+-> the answer is no 
+
+Because we still need one js file to load our code. So, this file will import from the other files that we created. And, thats how we organize our code in real website.
+
+So, the above file is called the entry point. 
+
+
+
+
+Now, in the add to cart button. Lets split our code into functions which makes our code easier to read.
+
+Now, the code looks like:
+
+
+function addToCart(productId) {
+  let matchingItem;
+  cart.forEach((item)=>{
+    if(productId === item.productId){
+      matchingItem = item;
+    }
+  });
+  if(matchingItem) {
+    matchingItem.quantity++;
+  }
+  else{
+    cart.push({
+      productId,
+      quantity: 1
+    })
+  }
+}
+
+function updateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((item)=>{
+    cartQuantity += item.quantity;
+  });
+  document.querySelector('.js-cart-quantity')
+    .innerHTML=cartQuantity;
+}
+
+document.querySelectorAll('.js-add-to-cart')
+  .forEach((button)=>{
+    button.addEventListener('click',()=>{
+      const productId = button.dataset.productId;
+      addToCart(productId);
+      updateCartQuantity();  
+    });
+  });
+
+So, as we can see by splitting our code into the smaller functions, it makes our code a lot easier to read.
+
+
+So, we will do 2 more things to better organize our code. 
+
+1. We see that addToCart function manages our cart. So, the best practice is to move the function into cart.js file. Because it contains all the code related to the cart.
+
+cart.js
+__________
+
+export function addToCart(productId) {
+  let matchingItem;
+  cart.forEach((cartItem)=>{
+    if(productId === cartItem.productId){
+      matchingItem = cartItem;
+    }
+  });
+  if(matchingItem) {
+    matchingItem.quantity++;
+  }
+  else{
+    cart.push({
+      productId,
+      quantity: 1
+    })
+  }
+}
+
+amazon.js
+__________
+
+import {cart, addToCart} from '../data/cart.js'
+
+So, import can import multiple things from a file.
+
+import has another syntax:
+
+import * as cartModule
+cartModule.cart
+cartModule.addToCart('id');
+
+This imports everything from a file and groups it inside an object (cartModule) and we can access each import as an property or method.
+
+
+Now, you might be wondering if we need to move updateCartQuantity function into cart.js as well
+So, this function actually handles updating the web page rather than managing the cart. So, we are gonna keep this function inside amazon.js for now.
+
+
+
+
+
+
+--------------- Create the checkout page --------------------
+
+inside the amazon.html we have
+
+<a class="cart-link header-link" href="checkout.html">
+  <img class="cart-icon" src="images/icons/cart-icon.png">
+  <div class="cart-quantity js-cart-quantity">0</div>
+  <div class="cart-text">Cart</div>
+</a>
+
+On the page we can see Cart if we click on that checkout page will be opened in our browser.
+
+<a></a> -> Link element 
+
+
+checkout.html
+________________
+
+<script type="module" src="scripts/checkout.js"></script>
+
+Then we created a new file (checkout.js) on the scripts folder.
+
+
+
+Now, if we see the structure of the checkout page. We can see 2 sections:
+
+1. Cart Section on the left which shows the products in our cart.
+2. payment section on the right which calculates the cost of our order.
+
+So, lets use the JS to create the cart section 1st.
+
+-------CART SECTION--------
+
+MAIN IDEA OF JS 
+1. SAVE THE DATA 
+2. GENERATE THE html
+3. MAKE IT INTERACTIVE 
+
+
+
+lets start by saving the data that we need for the cart section.
+
+So, for this section we are basically displaying a list of products along with the quantity of each product that we want to buy. 
+We alreday created a data structure to create this which is our cart. Inside our cart we have id of our product as well as the quantity that we want to buy. So, we can just use this data structure to create the cart section in the checkout page.
+
+
+cart.js
+__________
+
+So, inside the file we have an array called cart that suppose to represent our data in the checkout page. So, right now our cart is empty. So, to make it easier for us to develop we are just gonna add some default value to it.
+
+export const cart = [{
+  productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+  quantity: 2
+},{
+  productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+  quantity: 1
+}]
+
+We are just creating some default values that we can use to write the code to generate this page. So, the above code is just for development. The cart will start as empty when we finish it.
+
+With the help of productId we can search for the product inside the products array in the products.js 
+So, using the id we can find all the other details of the product. So, there is no need to save the other details twice inside the propducts array and inside the cart array.
+
+All we have to do is to save the productId of the product that we want and then search for it.
+
+So, this technique is called normalizing the data and this is a very common technique in software enginnering.
+
+So, one other thing that we probably need to save in our data is the delivery date and the delivery options. But we are gonna leave it for the next lesson as it requires more feature.
+
+For now, we finished saving the data that we need.
+
+
+----------------------------------generate the html------------------------------------------------
+
+
+Now, we will use the data to generate the html
+
+checkout.js
+__________
+
+import {cart} from '../data/cart.js';
+import {products} form '../data/products.js';
+
+Now, we will loop through the cart and generate the html from div with class cart-item container
+
+cart.forEach((cartItem)=>{
+  `
+  const productId = cart.productId;
+  let matchingProduct;
+  products.forEach((product)=>{
+    if(product.id === productId) {
+      matchingProduct = product;
+    }
+  })
+
+  <div class="cart-item-container">
+    <div class="delivery-date">
+      Delivery date: Tuesday, June 21
+    </div>
+
+    <div class="cart-item-details-grid">
+      <img class="product-image"
+        src="${matchingProduct.image}">
+
+      <div class="cart-item-details">
+        <div class="product-name">
+          ${matchingProduct.name}
+        </div>
+        <div class="product-price">
+          $${(matchingProduct.priceCents * 100).toFixed(2)}
+        </div>
+        <div class="product-quantity">
+          <span>
+            Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+          </span>
+          <span class="update-quantity-link link-primary">
+            Update
+          </span>
+          <span class="delete-quantity-link link-primary">
+            Delete
+          </span>
+        </div>
+      </div>
+
+      <div class="delivery-options">
+        <div class="delivery-options-title">
+          Choose a delivery option:
+        </div>
+        <div class="delivery-option">
+          <input type="radio" checked
+            class="delivery-option-input"
+            name="delivery-option-1">
+          <div>
+            <div class="delivery-option-date">
+              Tuesday, June 21
+            </div>
+            <div class="delivery-option-price">
+              FREE Shipping
+            </div>
+          </div>
+        </div>
+        <div class="delivery-option">
+          <input type="radio"
+            class="delivery-option-input"
+            name="delivery-option-1">
+          <div>
+            <div class="delivery-option-date">
+              Wednesday, June 15
+            </div>
+            <div class="delivery-option-price">
+              $4.99 - Shipping
+            </div>
+          </div>
+        </div>
+        <div class="delivery-option">
+          <input type="radio"
+            class="delivery-option-input"
+            name="delivery-option-1">
+          <div>
+            <div class="delivery-option-date">
+              Monday, June 13
+            </div>
+            <div class="delivery-option-price">
+              $9.99 - Shipping
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `
+})
+
+We are gonna take the cartItem and use it to get the data that we need.
+
+Lets go to cart.js to see how cartItem looks like. So, we have the productid and the quantity. So, now we need to use the productId to search for the product in order to get the other details. So, we got the productId out of the cartItem 1st.
+
+const productId = cart.productId;
+
+Now, we need to use this to search for the full product. So, the full product is inside products.js file in the products array.
+
+So, we need to import products array into checkout.js 
+
+import {products} from '../data/products.js'
+
+So, now we have the access to products array.
+
+And we will search the products array for full product details.
+
+We created 
+let matchingProduct; 
+to save the result
+
+And then we will loop through the products array.
+
+products.forEach((product)=>{
+  if(product.id === productId) {
+    matchingProduct = product;
+  }
+});
+
+So, now we have the matching product. We have access to the other details of the product as well that we can use to generate the html.
+
+So, this is the good eg of normalizing our data.
+
+So, lets console.log(matchingProduct);
+
+We can see that we were able to get the full product details for Each of the product using the productId.
+
+So, now that we have the full product details. We can use it to create all the html for the cart section
+
+Instead of genetaing the same html everytime we are gonna use:
+
+${matchingProduct.image}
+${matchingProduct.name}
+${(matchingProduct.priceCents / 100).toFixed(2)}
+${cartItem.quantity}
+
+in the required places.
+
+So, now we will be generating the html by looping our cart.
+
+Now, we will combine all this html together and put in our page.
+
+So, we will create a variable to store the result after the import statements.
+
+let  cartSummaryHTML = '';
+
+and inside the loop:
+
+cartSummaryHTML += `code inside`;
+
+Now, the last step is to put on the page using the dom.
+
+checkout.html
+_______________
+
+Before that we will give the div with class order-summary another class
+
+<div class="order-summary js-order-summary">
+
+Also, we will delete all the elements inside of this div and use JS to generate the html inside of it.
+
+checkout.js
+____________
+
+document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+
+
+
+So, this is how we create the cart section of the checkout page with JS. 
+
+
+
+Create a new folder (utils) in the scripts folder and create a file called money.js where:
+
+function formatCurrency(priceCents) {
+ return (priceCents/100).tofixed(2);
+}
+
+Now, we are gonna share the function in checkout.js and amazon.js.
+
+So, to share the function as before we will use import and export.  
+
+checkout.js
+____________
+
+${formatCurrency(matchingProduct.priceCents)}
+
+Similarly in,
+
+amazon.js 
+__________
+
+${formatCurrency(product.priceCents)}
+
+We are running the same code except we are using the shared function thats located in another file. 
+We dont have to use (..../100).toFixed(2) everytime whenever we have to change to dollar we can simply use the formatCurrency function.
+
+
+
+
+
+Before we continue we have a issue
+The delivery option are actually shared between the 2 products. If we click delivery option in 1 product, it unselects the delivery option from the another product. We want each product to be able to select the delivery option.
+
+So, to fix it
+
+checkout.js
+____________
+
+The small circle from which we select the delivery option is an html element called radio selctor.
+
+Code:
+
+<input type="radio" name="name1">
+_____________________________________
+
+
+So, the way the radio selector works is that if the set of radio selectors have the same name than we cam oly select one of them.
+
+The 3 delivery option of 1stproduct have the same name than we can only select one of them. And if the 3 delivery option of 2nd product have the same name but diff name from the 1st product than we can select 1 from the 1stproduct and select 1 from the 2nd product.
+
+
+
+Q. What is the problrm with the radio selectors in our code?
+-> Both products delivery options have the same name attribute. Thats why we can only select one of the delivery option for both product. So, what we want to do is we want to have 1st prodct selectors to have one name and 2nd product selectors to have different name.
+
+In every radio selectors we have the same name "delivery-option-1"  for all the products. So, what we wanna do is instead of using the name "delivery-option-1" everytime each product is going to use diff name for the 3 delivery option selectors.  
+
+One way is instead of using "delivery-option-1" we can use "delivery-option-${matchingProduct.id}" as all products have the diff id. 
+
+Now, the 1st product radio selectors will hvae diff name attribute from the 2nd product radio selectors. And, now we can select one date for 1 product and another date for another product.
+
+
+
+
+----------------------------------------Make it Interactive ----------------------------------------
+
+The last step in our process is to make it interactive 
+
+
+For the order summary there are few things that we can make interactive.
+
+1. Delete 
+-> When we click this link it should delete the product from the cart and update the html.
+
+So, we are gonna learn how to build this. 
+
+So, lets go to checkout.js and add eventlisteners to the delete links. Before we will add the class "js-delete-link" to the delete link.
+
+<span class="delete-quantity-link link-primary js-delete-link">
+  Delete
+</span>
+
+
+And, at the bottom
+
+document.querySelectorAll('.js-delete-link')
+  .forEach((link)=>{
+    link.addEventListener(('click')=>{
+      console.log('delete');
+    })
+  })
+
+We did console.log to check if the above code is runnning
+
+Now, 1st we will remove the product from the cart and then update the html.
+
+
+So, 1st we will remove the product from the cart
+  
+Q. How do we know which product to remove?
+-> So, we learned how to do this for add to cart button. We can attach the products id in the delete link element.
+
+<span class="delete-quantity-link link-primary js-delete-link" data-product-id: ${cartItem.productId}>
+  Delete
+</span>
+
+
+
+Q. How do we remove a productId from cart?
+-> So, we will create a function on cart.js to do this task.
+
+
+export function removeFromCart(productId) {
+  cart.forEach((cartItem,index)=>{
+    if(cartItem.productId === productId) {
+      cart.splice(index,1);
+    } 
+  });
+}
+
+SO, this function will take a productId that we have and remove it from the cart. So, we give it a parameter productId. It will remove the productId from the cart if the productid matches.
+
+
+Or we can also:
+
+Create a new array. Loop through the cart and Add each product to the new array except for this productId.
+
+export function removeFromCart(productId) {
+  const newcart = [];
+  cart.forEach((cartItem)=>{
+    if (productId !== cartItem.productid) {
+      newcart.push(cartItem);
+    }
+  });
+  cart = newCart;
+}
+
+At last we replace the cart with new cart. And so, the cart is changed at the top we use let cart instead of const cart.
+
+
+
+Now, in checkout.js
+
+import {cart, removeFromCart} from '../data/cart.js';
+
+document.querySelectorAll('.js-delete-link')
+  .forEach((link)=>{
+    link.addEventListener('click',()=>{
+      const productId = link.dataset.productId;
+        removeFromCart(productId);
+      })
+  })
+
+
+The second thing we have to do when we click delete is to update the html.
+
+1. Use the DOM to get the elemnt to remove
+2. Use .remove() method
+
+So, every element we get from the DOM has a method called .remove() which removes it from the page.
+
+Q. How do we know which element to get from the page?
+-> So, we will go to the div cart-item-container and add special class:
+
+<div class="cart-item-container 
+  js-cart-item-container-${matchingProduct.id}">
+
+
+And, at the bottom we are gonna use the DOM and the productID to get the special class that we created.
+
+const container = document.querySelector(`.js-cart-item-container-${productId}`)
+
+Now, we have the element that we want to delete 
+
+Now, we will use the .remove() method.
+
+So, every element we get from the DOM has a method called .remove() which removes it from the page.
+
+document.querySelectorAll('.js-delete-link')
+  .forEach((link)=>{
+    link.addEventListener('click',()=>{
+      const productId = link.dataset.productId;
+      removeFromCart(productId);
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      });
+      container.remove();
+  })
+
+
+Now, if we click the delete button the above code will remove the product from the page.
+
+Thats how we make the delete link interactive and make the product remove from the cart and the page.
+
+
+Add localStorage to our Cart:
+
+cart.js
+
+function saveToStorage() {
+  localStorage.setItem('score',JSON.stringify(score));
+}
+
+Now, whenever we update the cart we need to save it to localStorage. So, it doesnot reset when we reload the page.
+
+So, in the addToCart() and removefromcart() functions we have added the saveToStorage() 
+
+And at the top we need to get the local storage. So,
+
+export const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+
+_________________________________________________________________________________________________
+
+
+In this Lesson:
+
+1. Modules - better way to organoze our code 
+2. Created the checkout page
+3. HTML link elments and radio selectors
+4. Made the delete link interactive
+5. Save cart to local storage.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

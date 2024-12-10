@@ -1,0 +1,1144 @@
+OOP -> Object Oriented Programming 
+
+- another style of programming 
+(another way we write our code)
+
+- organizing our code into objects 
+
+Eg:
+
+data-> cart.js
+
+Inside the file we have the code for our cart. And, for cart we notice that we have data at the top and we have bunch of functions that modify the cart and these are seprate from each other the data and the functions. 
+
+So, this style of programming that we have been using throughout the course is called procedural programming.
+
+Procedural Programming 
+
+Procedure 
+=> a set of step-by-step instructions 
+=> basically a function
+
+So, in procedural programming we organize our code in seperate functions.
+
+
+
+Object-Oriented Programming 
+=> organize all of the code into objects 
+
+
+
+
+So, lets convert the cart code into object-oriented-programming
+
+
+data-> cart-oop.js
+
+Copy all the code of cart.js into cart-oop.js
+
+Now, to convert the code into OOP. We are gonna group all the data and the functions together into an object.
+
+So, first we create an object: 
+
+const cart = {};
+
+Now, we will group all of our data and functions into an object. So, we will do step by step. Lets start by cart variable.
+
+let cart; is shortcut for let cart = undefined;
+
+So, now we will move this into an object.
+
+const cart = {
+  cart: undefined,
+}
+
+Inside the object we cannot use the word let or export. So, when we move a variable into an object we are gonna convert it into a property and a value. 
+
+So, the above code is same as cart=undefined; only difference is that we moved it inside an object.
+
+One problem here is that if we access the cart property inside the object we will do cart.cart which can be a bit confusing. So, we will rename it to cartItems instead to make it more clear that this contain the items in the cart or the products that are in the cart.So,
+
+const cart = {
+  cartItems: undefined,
+}
+
+
+
+Now, we are gonna group all of our functions into the object as well.
+
+
+
+So, we will move loadFromStorage() function inside the object.
+
+Since, we can use export so we will convert it into property and value as well.
+
+const cart = {
+  cartItems : undefined,
+
+  loadFromStorage: function() {
+    cart = JSON.parse(localStorage.getItem('cart'));
+
+    if(!cart) {
+      cart = [{
+        productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 2,
+        deliveryOptionId : '1'
+      },{
+        productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+        deliveryOptionId : '2'
+      }];
+    }
+  }
+}
+
+So, this is how we move a function into this object. And, make sure that you use regular function syntax here and not an arrow function. 
+
+Reminder: When we have an function inside an object, we call this a method.  
+
+
+Also JS have a shortcut called Shorthand Method Syntax:
+
+We can simply write ,
+
+loadFromStorage() {             
+....
+}
+
+
+Now, the cart inside the functions doesn't actually work anymore because cart was actually renamed to cartItems. So, we have to rename the variable.
+
+
+const cart = {
+  cartItems : undefined,
+
+  loadFromStorage: function() {
+    cart.cartItems = JSON.parse(localStorage.getItem('cart'));
+
+    if(!cart.cartItems) {
+      cart.cartItems = [{
+        productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 2,
+        deliveryOptionId : '1'
+      },{
+        productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+        deliveryOptionId : '2'
+      }];
+    }
+  }
+}
+
+So, this cart works. However we have a samll problem here. If we change the name of the object, this code will no longer work. To solve this problem Js has a feature called "this". "this" gives us the object that contains this function. SO, it gives us the outer object at the top.
+
+So, to improve our code we are gonna change from using the variable name cart to "this"
+
+const cart = {
+  cartItems : undefined,
+
+  loadFromStorage: function() {
+    this.cartItems = JSON.parse(localStorage.getItem('cart'));
+
+    if(!this.cartItems) {
+      this.cartItems = [{
+        productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 2,
+        deliveryOptionId : '1'
+      },{
+        productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+        deliveryOptionId : '2'
+      }];
+    }
+  }
+}
+
+Now, "this" will give us the outer object and it will always work. And, doesn't matter what the variable name is. 
+
+The last thing that we are gonna change in this function is we are currently loading from localStorage 'cart'. However, our original cart was also loading from localStorage 'cart'. So, lets change that to cart-oop so that we donot affect our original cart. 
+
+this.cartItems = JSON.parse(localStorage.getItem('cart-oop'));
+
+
+
+Now, we will move the other functions into the object.
+
+
+
+
+saveToStorage() {
+  localStorage.setItem('cart-oop',JSON.stringify(cart));
+}
+
+Here we changed:
+
+'cart' -> 'cart-oop'  So, that we donot affect the original cart.
+
+cart -> this.cartItems   As, cart was renamed to cartItems 
+
+
+
+addToCart(productId) {
+  let matchingItem;
+  this.cartItems.forEach((cartItem)=>{
+    if(productId === cartItem.productId){
+      matchingItem = cartItem;
+    }
+  });
+  if(matchingItem) {
+    matchingItem.quantity++;
+  }
+  else{
+    this.cartItems.push({
+      productId,
+      quantity: 1,
+      deliveryOptionId: '1'
+    })
+  }
+  saveToStorage();
+}
+
+Here we changed:
+
+cart -> this.cartItems   As, cart was renamed to cartItems.
+
+saveToStorage(); -> this.saveToStorage();  To access the function inside the object
+
+
+
+removeFromCart(productId) {
+  this.cartItems.forEach((cartItem,index)=>{
+    if(cartItem.productId === productId) {
+      this.cartItems.splice(index,1);
+    } 
+  });
+  this.saveToStorage();
+}
+
+Here we changed:
+
+cart -> this.cartItems   As, cart was renamed to cartItems.
+
+saveToStorage(); -> this.saveToStorage();  To access the function inside the object
+
+
+
+updateDeliveryOption(productId, deliveryOptionId) {
+  let matchingItem;
+  this.cartItems.forEach((cartItem)=>{
+    if(productId===cartItem.productId) {
+      matchingItem=cartItem;
+    }
+  });
+  matchingItem.deliveryOptionId = deliveryOptionId;
+  this.saveToStorage();
+}
+
+Here we changed:
+
+cart -> this.cartItems   As, cart was renamed to cartItems.
+
+saveToStorage(); -> this.saveToStorage();  To access the function inside the object
+
+
+
+
+So, the final code:
+________________________
+
+
+
+
+
+const cart = {
+  cartItems: undefined,
+
+  loadFromStorage() {
+    this.cartItems = JSON.parse(localStorage.getItem('cart-oop'));
+  
+    if(!this.cartItems) {
+      this.cartItems = [{
+        productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 2,
+        deliveryOptionId : '1'
+      },{
+        productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+        deliveryOptionId : '2'
+      }]
+    }
+  },
+
+  saveToStorage() {
+    localStorage.setItem('cart-oop',JSON.stringify(this.cartItems));
+  },
+
+  addToCart(productId) {
+    let matchingItem;
+    this.cartItems.forEach((cartItem)=>{
+      if(productId === cartItem.productId){
+        matchingItem = cartItem;
+      }
+    });
+    if(matchingItem) {
+      matchingItem.quantity++;
+    }
+    else{
+      this.cartItems.push({
+        productId,
+        quantity: 1,
+        deliveryOptionId: '1'
+      })
+    }
+    this.saveToStorage();
+  },
+
+  removeFromCart(productId) {
+    this.cartItems.forEach((cartItem,index)=>{
+      if(cartItem.productId === productId) {
+        this.cartItems.splice(index,1);
+      } 
+    });
+    this.saveToStorage();
+  },
+
+  updateDeliveryOption(productId, deliveryOptionId) {
+    let matchingItem;
+    this.cartItems.forEach((cartItem)=>{
+      if(productId===cartItem.productId) {
+        matchingItem=cartItem;
+      }
+    });
+    matchingItem.deliveryOptionId = deliveryOptionId;
+    this.saveToStorage();
+  }
+}
+
+cart.loadFromStorage();
+
+
+
+
+
+
+Here, since loadFromStorage() was moved inside the cart object. So, to access the function:
+
+cart.loadFromStorage();
+
+
+
+
+
+
+So, this is the basic idea behind OOP. 
+
+We organize our code into objects. SO, we group data and functions into object like above.
+
+
+
+
+Q. Why do we use OOP?
+-> OOP tries to represent the real world. 
+
+In, the real world cart is a physical Object. So, in OOP we represent this physical object as a digital object or in this case JS object. A physical object can have products inside so our JS object can also have objects inside. A physical cart have the actions that we can take to modify the cart like add a product or remove a product. Our Js object also has actions that we can take to modify the cart like add a product, remove a product. 
+
+
+So, this make smoe people easier to understand.
+
+
+So, lets check the code of cart-oop.js 
+
+console.log(cart);
+
+Now, lets load this code into the project:
+
+So, scripts-> checkout.js
+
+import '../data/cart-oop.js';
+
+This will run all the code inside the cart-oop.js file without importing anything 
+
+Now, we will open the checkout page in the browser.
+
+
+In the cosnoel we will see the cart object and inside the object we willsee the data as well as all the functions for the cart. But its grouped inside the object 
+
+To check if it is working we can:
+
+cart.addToCart('83d4ca15-0f35-48f5-b7a3-1ea210004f2e');
+
+In the console, inside the cart object we can see cartItems now will have 3 values. Because, we just added new product to the cart. 
+
+
+
+
+
+Another, reason why we use OOP is that it is easy to create multiple objects.
+
+For eg:
+
+The real amazon.com has a feature called amazon business where we can have a seperate cart for business purchases.
+
+
+
+
+Q. So, how do we create seperate carts in our code?
+-> With OOP, this is easy. We can just make the copy of the cart object and just rename the object to businessCart. And, when we load from storage lets load it from cart-business. So, that it doesnot conflict with the other cart. And same thing in the setItem as well.
+
+
+
+
+While creating a function for object. We use pascal naming convention. WHere first letter of the word is Capital including the 1st word. 
+
+function Cart() {
+  const cart = {
+    cartItems: undefined,
+
+    loadFromStorage() {
+      this.cartItems = JSON.parse(localStorage.getItem('cart-oop'));
+    
+      if(!this.cartItems) {
+        this.cartItems = [{
+          productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+          quantity: 2,
+          deliveryOptionId : '1'
+        },{
+          productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+          quantity: 1,
+          deliveryOptionId : '2'
+        }]
+      }
+    },
+
+    saveToStorage() {
+      localStorage.setItem('cart-oop',JSON.stringify(this.cartItems));
+    },
+
+    addToCart(productId) {
+      let matchingItem;
+      this.cartItems.forEach((cartItem)=>{
+        if(productId === cartItem.productId){
+          matchingItem = cartItem;
+        }
+      });
+      if(matchingItem) {
+        matchingItem.quantity++;
+      }
+      else{
+        this.cartItems.push({
+          productId,
+          quantity: 1,
+          deliveryOptionId: '1'
+        })
+      }
+      this.saveToStorage();
+    },
+
+    removeFromCart(productId) {
+      this.cartItems.forEach((cartItem,index)=>{
+        if(cartItem.productId === productId) {
+          this.cartItems.splice(index,1);
+        } 
+      });
+      this.saveToStorage();
+    },
+
+    updateDeliveryOption(productId, deliveryOptionId) {
+      let matchingItem;
+      this.cartItems.forEach((cartItem)=>{
+        if(productId===cartItem.productId) {
+          matchingItem=cartItem;
+        }
+      });
+      matchingItem.deliveryOptionId = deliveryOptionId;
+      this.saveToStorage();
+    }
+  }
+}
+
+const cart = Cart();
+const businessCart = Cart();
+
+cart.loadFromStorage();
+businessCart.loadFromStorage();
+
+console.log(cart);
+console.log(businessCart);
+
+
+
+So, instead of copy pasting all the time we are gonna us ethe functions to generete objects.
+
+Now, we will have 2 cartObjects but both will have 3 items on it. But it regular cart should have 3 items and the business cart should have 2 items. 
+
+It is because we are loading from the same key in localStorage 'cart-oop'. That means every cart that we generate will be getting from the same place in localStorage. 
+
+So, to fix this we are gonna replace 'cart-oop' with a paremeter. So, different cart can use diff key in localStorage. 
+
+So,
+
+function Cart(localStorageKey) {
+  ...
+  ...
+  loadFromStorage() {
+    this.cartItems = JSON.parse(localStorage.getItem(localStorageKey));
+  },
+
+  saveToStorage() {
+    localStorage.setItem('localStorageKey',JSON.stringify(this.cartItems));
+  }
+  ...
+  ...
+}
+
+const cart = Cart('cart-oop');
+const businessCart = Cart('business-cart');
+
+cart.loadFromStorage();
+businessCart.loadFromStorage();
+
+console.log(cart);
+console.log(businessCart);
+
+Now, our regular cart has 3 products and the business cart has 2 products.
+
+
+THis is a better way to create multiple objects. INstead of copy pasting bunch of code everytime.
+
+We can create a function that generates objects. 
+
+
+
+
+
+__________________________________________________________
+
+
+
+
+An even better way to generate objects 
+
+
+OOP has a feature called a Class
+
+Class
+______
+
+A class is specifically designed to generate objects.
+Class => object generator 
+
+
+We learned how to use a function to generate object in OOP. Now, we are gonna switch to class to generate this objects instead because classes are cleaner and has more features than using a function.
+
+SO, lets create a new file for learning classes.
+
+data-> cart-class.js
+
+So, we will copy all of code from cart-oop and compare it.
+
+Now, we will create our 1st class using the word class. And give it a name.
+
+
+class Cart {
+
+}
+So, this is a class 
+
+
+Reminder: Use PascalCase for things that generate object
+
+Now, inside the class we are gonna put the properties and methods that we want for each object that we generate.
+
+class Cart {
+  cart: undefined,
+}
+
+classes use a slightly diff syntax than objects. So, to create a property called cartItems. Insetead of colon we use equals sign. And instead of a comma at the end we use semi-colon.
+
+class cart {
+  cart = undefined;
+}
+
+
+
+Next, lets move method into the class.
+
+Now, classes use slightly different syntax to create methods as well. INstead of comma at the end we can just remove it.
+
+class cart {
+  cart = undefined;
+
+  loadFromStorage() {
+    this.cartItems = JSON.parse(localStorage.getItem(localStorageKey));
+    
+    if(!this.cartItems) {
+      this.cartItems = [{
+        productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 2,
+        deliveryOptionId : '1'
+      },{
+        productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+        deliveryOptionId : '2'
+      }];
+    }
+  }
+}
+
+
+Now, lets move rest of the methods into the class.
+
+
+So, this is how we create a class. We basically give it some properties and methods and now when we generate objects using this class, every object we generate will have this  properties and methods. 
+
+One thing we need to fix here is that localStorageKey doesn't exist anymore. To fix this we are gonna set it in a property instead. 
+
+So, at the top we are gonna give new property to every object that we generate called:
+
+cartItems = undefined;
+localStorageKey = undefined;
+
+And inside the methods we will switch localStorageKey -> this.localStorageKey
+
+So, this is gonna point to the object that we generate just like before. 
+
+Code:
+
+class Cart {
+  cartItems = undefined;
+  localStorageKey = undefined;
+
+  loadFromStorage() {
+    this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+  
+    if(!this.cartItems) {
+      this.cartItems = [{
+        productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 2,
+        deliveryOptionId : '1'
+      },{
+        productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+        deliveryOptionId : '2'
+      }]
+    }
+  }
+
+  saveToStorage() {
+    localStorage.setItem(this.localStorageKey,JSON.stringify(this.cartItems));
+  }
+
+  addToCart(productId) {
+    let matchingItem;
+    this.cartItems.forEach((cartItem)=>{
+      if(productId === cartItem.productId){
+        matchingItem = cartItem;
+      }
+    });
+    if(matchingItem) {
+      matchingItem.quantity++;
+    }
+    else{
+      this.cartItems.push({
+        productId,
+        quantity: 1,
+        deliveryOptionId: '1'
+      })
+    }
+    this.saveToStorage();
+  }
+
+  removeFromCart(productId) {
+    this.cartItems.forEach((cartItem,index)=>{
+      if(cartItem.productId === productId) {
+        this.cartItems.splice(index,1);
+      } 
+    });
+    this.saveToStorage();
+  }
+
+  updateDeliveryOption(productId, deliveryOptionId) {
+    let matchingItem;
+    this.cartItems.forEach((cartItem)=>{
+      if(productId===cartItem.productId) {
+        matchingItem=cartItem;
+      }
+    });
+    matchingItem.deliveryOptionId = deliveryOptionId;
+    this.saveToStorage();
+  }
+
+}
+
+Now, that we have the class we will use it to generate cart and businessCart 
+
+const cart = new Cart()
+
+So, we see that class uses the similar syntax as a function except we use new in front. So, this generates a new object using our class. And, this new object will have all the properties and methods that we added above. 
+
+SImilarly for business cart
+
+const businessCart = new Cart();
+
+
+Now, there is 1 thing we need to fix here. Each of the object has a property called localStorageKey and they are currently undefined. So, we need to set the property. 
+
+cart.localStorageKey = 'cart-oop';
+businessCart.localStorageKey = 'cart-business';
+
+Then we will load cart from storage as well as the businessCart.
+
+cart.loadFromStorage();
+businessCart.loadFromStorage();
+
+And, then console.log() them
+
+console.log(cart);
+console.log(businessCart);
+
+
+So, we have the same code as before except we converted it from function to class. 
+
+So, similarly as before normal cart has 3 items and business cart has 2 items.
+
+
+Each object that we generate from a class is called an instance of class.
+
+In the above code we created 2 objects cart and business cart.
+
+We can also check, if an object is an instance of class. Using the code:
+
+console.log(businessCart instanceof Cart);
+
+This will check if businessCart object is generated from Cart class. It will tell true. 
+
+
+
+OOP 
+=> organizing our code into objects (tries to represent the real world)
+
+Class 
+=> help us generate these objects.(basically an object generator)
+
+
+
+
+Benefits of classes
+________________________
+
+1. A class looks like the object that it generates 
+2. Cleaner than using the function.
+3. Classes have extra features for OOP.
+
+i. Constructor 
+=> let us run setup code, Constructor lwts us put thus setup code inside the class 
+
+
+To create a constructor inside the class
+
+class Cart {
+  ...
+  constructor() {
+
+  }
+}
+
+So, a constructor method works like a normal method. We put the code inside and it will run the code. But the special thing about constructor is that we generate an object it will run the constructor automatically. SO, this is the best place to keep our setup code.
+
+So, instead of running the setup code outside the class. We are gonna move it into the class.
+
+class Cart {
+  ...
+  constructor() {
+    cart.localStorageKey = 'cart-oop';
+    businessCart.localStorageKey = 'cart-business';
+
+    cart.loadFromStorage();
+    businessCart.loadFromStorage();
+  }
+}
+
+After we create the object it will run the code inside the constructor and setup the object. 
+
+So, there is few things that we need to fix here.
+
+1. Each object that we create is gonna run the constructor. SO, we will only need one of th eeach of these lines .
+
+So,
+
+class Cart {
+  ...
+  constructor() {
+    cart.localStorageKey = 'cart-oop';
+    cart.loadFromStorage();
+  }
+}
+
+So, now the setup code has 2 steps. We set the localStorageKey and then we loadFromStorage.
+
+2.The Object that we create is not gonna be called cart everytime.
+=> to solve this we are gonna replace cart with "this".
+
+class Cart {
+  ...
+  constructor() {
+    this.localStorageKey = 'cart-oop';
+    this.loadFromStorage();
+  }
+}
+
+Reminder : "this" points to the object that we generate. So, whatever object that we generate. we are gonna get its localStorageKey and set it and we are gonna get its loadFromStorage() method and run that method.
+
+
+3. Now, another problem here is that we don't want localStorage key to be 'cart-oop' everytime.
+=> To fix this constructor can also have parameter 
+
+class Cart {
+  ...
+  constructor(localStorageKey) {
+    this.localStorageKey = localStorageKey;
+    this.loadFromStorage();
+  }
+}
+
+
+4. How, doe we save a value into the parameter 
+=> When we call the class betn the brackets we can put the parameter from the constructors.
+
+const cart = new  Cart('cart-oop');
+const businessCart = new Cart('cart-business');
+
+
+
+More details about the constructor:
+
+1. Has to be names "constructor"
+2. Should not return anything from the constructor 
+
+
+Lastly a shortcut that we can use in a class is when we have a property and it is equal to undefined.
+
+cartItems = undefined; => cartItems;
+localStorageKey = undefined; => localStorageKey;
+
+
+So, now we have completed our code from converting a function into a class.
+
+
+So, as we can see
+
+class = better way to generate objects in OOP 
+
+
+
+
+Next we are gonna learn imp features of classes called private properties and method.
+
+cart-class.js
+________________
+
+We can see Cart class has a property called localStorageKey. So, this property is useful inside the class. But it is really not meant to be used outside the class. 
+
+EG:  Outside the class we could change the localStorageKey:
+
+cart.localStorageKey = 'aaa';
+
+This is a problem because it will mess up how the object works and it will start saving to a diff local storage key. SO, this is a comman problem in programming when you are on a team somebody might change the properties that they are not supposed to. To prevent this classes let us make a property or a method private.
+
+Private => it can obly be accessed inisde the class.
+
+So, to make localStorageKey private:
+
+We will just add a # sign in front of it and also whenever we access this property inside the class we are gonna add # in front.
+
+So, 
+
+code:
+
+class Cart {
+  cartItems;
+  #localStorageKey;
+
+  constructor(localStorageKey) {
+    this.#localStorageKey = localStorageKey;
+    this.loadFromStorage();
+  }
+
+  loadFromStorage() {
+    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
+  
+    if(!this.cartItems) {
+      this.cartItems = [{
+        productId : 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 2,
+        deliveryOptionId : '1'
+      },{
+        productId : '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+        deliveryOptionId : '2'
+      }]
+    }
+  }
+
+  saveToStorage() {
+    localStorage.setItem(this.#localStorageKey,JSON.stringify(this.cartItems));
+  }
+
+  addToCart(productId) {
+    let matchingItem;
+    this.cartItems.forEach((cartItem)=>{
+      if(productId === cartItem.productId){
+        matchingItem = cartItem;
+      }
+    });
+    if(matchingItem) {
+      matchingItem.quantity++;
+    }
+    else{
+      this.cartItems.push({
+        productId,
+        quantity: 1,
+        deliveryOptionId: '1'
+      })
+    }
+    this.saveToStorage();
+  }
+
+  removeFromCart(productId) {
+    this.cartItems.forEach((cartItem,index)=>{
+      if(cartItem.productId === productId) {
+        this.cartItems.splice(index,1);
+      } 
+    });
+    this.saveToStorage();
+  }
+
+  updateDeliveryOption(productId, deliveryOptionId) {
+    let matchingItem;
+    this.cartItems.forEach((cartItem)=>{
+      if(productId===cartItem.productId) {
+        matchingItem=cartItem;
+      }
+    });
+    matchingItem.deliveryOptionId = deliveryOptionId;
+    this.saveToStorage();
+  }
+
+}
+
+
+
+SO, 
+
+#localStorageKey => is called private property. It means it can only be used inside the Cart class.
+
+A propert without the # in front is called public property.
+cartItems => public property, It can be accessed anywhere 
+
+If we try to access private property outside the class it will give us syntax error.
+
+
+
+
+
+We can also have private methods 
+
+The method loadFromStorage should also be used inside the class. We will just add # in front of it. Because we are only using loadFromStorage method inside the class. So, a class let us create private property and methods and this is useful on a bigger project where people might not be sure which property and methods they are suppose to use outside the class and which ones to avoid.
+
+
+
+
+
+
+data-> products.js
+_____________________
+
+Here, is the code or the data for all the products on the home page. Each product is an object.
+
+We are gonna learn a technique called converting an object into a class.
+
+So, what this means is instead of using regular objects in the array we are gonna use a class to generate this objects. So, we create a class.
+
+class Product {
+
+}
+
+This class is meant to generate products. So, now each of the products is gonna have some properties like id,image and the name. So, lets add these to the class.
+
+
+class Product {
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+}
+
+So, now we have all the property that we want for each product. Now, lets test it by generating the product using this class. So, lets create a variable.
+
+const product1 = new Product();
+console.log(product1);
+
+
+Inside the console we will see that we created a product object using the class.
+
+So, right now all of the properties are undefined. So now lets set the properties of these values.
+
+Remember: classes have a special feature for setup code called constructor.
+
+So, inside the class we are gonna create a constructor. Whenever we genereate an object its automatically gonna run the constructor. SO, this constructor is where we need to keep our setup code.
+
+class Product {
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+
+  constructor (productDetails) {
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+  }
+}
+
+const product1 = new Product({
+  id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+  image: "images/products/athletic-cotton-socks-6-pairs.jpg",
+  name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
+  rating: {
+    stars: 4.5,
+    count: 87
+  },
+  priceCents: 1090,
+  keywords: [
+    "socks",
+    "sports",
+    "apparel"
+  ]
+});
+
+
+So, this is called converting an object into a class. 
+
+Same object as before but as an enhanced version (It has some extra features from classes).
+
+For ecah product instead of writing manually we are going to loop through the products array and use code to convert each of this objects.
+
+So, 
+
+export const products = [
+  ....
+].map()
+
+map -> basically loops thorugh an array and for each value it runs an function.
+
+So, we will give it a function that we want to run for each value. and the function will get a parameter. SO, this parameter is basically each value in the array. So, it will take 1st value save it inside the parameter, run the function and then take the 2nd save it inside parameter, run the function and so on. So, lets name the parameter the productDetails because each object in the array contains productDetails.
+
+So, now its gonna take each object save it in the parameter and run the function and here we will convert the object into class. 
+
+export const products = [
+  ....
+].map((productDetails)=>{
+  new Product(productDetails);
+});
+
+And, there is 2nd part to how map works. 
+
+So, .map creates a new array and whatever we return from the inner function is gonna go inside that new array. So, we will return the class.
+
+export const products = [
+  ....
+].map((productDetails)=>{
+  return new Product(productDetails);
+});
+
+So, this result gonna be put inside a new array. SO, here we are transferring each of these products or these regular objects into a class. 
+
+So, lets console.log the products array to condirm it.
+
+console.log(products);
+
+And we can see we have an array and each of the values is a product class instead of just a regular object. So, we converted all of the products from regular objects into this product class.
+
+If we open the page everything is working properly that is because we have the exact same object as before except they are just sort of enhanced objects. 
+
+Next, lets use those extra features of classes to simplify our code.
+
+
+
+scripts -> amazon.js
+
+In the rating section, where we calculate the stars and the rating count. So, notice that inside our html we are constructing a url for the no. of stars a product has and also we are creating the price that we want to display on the page.
+
+Now, instead of doing this in html our code will be cleaner if we moved this logic into our class becuase we want to group this related code together. So, lets use feature of classes to make this code cleaner. 
+
+
+products.js
+________________
+
+In the product class lets add a method for calculating stars and productprice.
+
+
+class Product {
+  ...
+  ...
+  constructor (productDetails) {
+    ...
+    ...
+  }
+  getStarsURL() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
+  }
+
+  getPrice() {
+    return `$${formatCurrency(this.priceCents)}`
+  }
+}
+
+product.rating.stars -> this.rating.stars
+product.priceCents->this.priceCents
+
+Now, each product is able to construct its own stars URL.
+
+BUt we need to import formatCurrency to the file.
+
+import {formatCurrency} from '../scripts/utils/money.js';
+
+
+scripts -> amazon.js
+_____________________
+
+<img class="product-rating-stars" 
+  src="${product.getStarsURL()}"> 
+
+
+<div class="product-price">
+  ${product.getPrice()}
+</div>
+
+
+Now, in the home page every thing is still working.
+
+Now, we have this methods lets use this in our other page.
+
+
+
+scripts -> checkout -> orderSummary.js
+
+Here, in this page we will change the formatCurrency codes with our -> getprice Codes 
+
+So, 
+code:
+
+<div class="product-price">
+  ${matchingProduct.getPrice()}
+</div>
+
+const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `${matchingProduct.getPrice()} -`;
+
+
+here we can see by converting our objects into classes we are able to use extra features of classes like methods to make our code cleaner
+

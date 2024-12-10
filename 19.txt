@@ -1,0 +1,60 @@
+Backend 
+______________
+
+=> another computer that manages the data of a website 
+
+
+Q. How does Amazon (the company) knows which product we ordered?
+-> In this case there needs to be a 2nd computer thats owned by amazon and then our computer sends the order info to the 2nd comp and now amazon will know what we ordered.
+So, this 2nd comp is called backend comp or simply backend. It manages the data of a website. 
+On the other hand our computer where we can see and interact with products, this is called the front end. 
+
+
+Q. How does our computer (frontend) send info to the backend?
+-> When 2 comp are connected to the internet they can actually send messages to each other using a feature called HTTP. 
+
+In an HTTP message, we can actually attach info like our amazon order. When amazon backend recieves this HTTp msg. Now, amazon will know what we ordered. Now, that we know what HTTP is lets send our 1st HTTP msg using JS 
+
+Lets create a new file for just practicing backend:
+
+data-> backend-practice.JS
+
+To send the HTTP message we will use a class:
+
+XMLHttpRequest -> built-in class 
+
+1st we will generate an obj using this class:
+
+new XMLHttpRequest();  -> creates a new HTTP message to send to the backend
+
+const xhr = new XMLHttpRequest();
+
+
+
+Next we need to setup this request. SO,
+
+xhr.open();
+
+
+Here we will give 2 parameters 
+
+1. Type of HTTP msg to sent 
+  i. GET = get some info from the backend 
+
+2. Where to send this HTTP message
+  i. Use URl  = Uniform Resource locator
+  -> Like an address but for the internet 
+  -> Helps us locate another computer on the internet
+
+URL looks like:
+
+https://amazon.com
+https://youtube.com
+https://supersimple.dev 
+
+
+https -> using http to communicate with this comp, s after the http means we are using the secured version of http 
+The second part of the URL is called the domain name. This is like an address, it points to another computer on the internet. So, amazon.com points to one of the amazon backend computer 
+
+To know extra about this we can see the video to how to put website online (Put a website online)
+

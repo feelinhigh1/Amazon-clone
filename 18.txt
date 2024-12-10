@@ -1,0 +1,280 @@
+
+
+Inheritance
+______________
+
+
+Inheritance lets us use code between classes.
+
+We use inheritance when one class is a more specific type of another class.
+
+products.js
+______________
+
+Eg: Clothing is more specific type of product. We want all the properties and method of the product but we just dont want to copy paste all the code. SO, we use
+
+class Clothing extends Product {
+
+}
+
+So, now we have clothing class we can add properties and methods that are more specific with clothing. 
+
+class Clothing extends Product{ //Clothing will inherit every method and property from the product class
+  sizeChartLink;
+
+  constructor(productDetails) {
+    super(productDetails); // calls the constructor of the parent class i.e. Product
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+}
+
+So, this will get sizeChartLink property.
+
+So, thats how inheritance works. A class can get or inherit all the properties and method of another class and reuse that code. And the child class can have more specific properties and methods like sizeChartLink.
+
+
+
+Note: One last thing to know if we dont create a constructor by default it will run the param constructor. 
+
+class Clothing extends Product {
+  constructor(param1) {
+    super(param1);
+  }
+}
+
+So, thats why when the clothing class was empty the code still worked. 
+
+
+Now, lets use clothing class in our project. 
+
+
+How would we know which to convert into a product and which ones to convert into clothing. To help us with that we have a property called type. So, type tells us which class we should we use when converting it into a class. 
+
+This is sometimes called discriminator property. It tells us wghich class we should convert it to. 
+
+
+export const products = [....
+].map((productDetails)=>{
+  if(productDetails.type === 'clothing') {
+    return new Clothing(productDetails);
+  }
+  return new Product(productDetails);
+});
+
+SO, now array will contain a mix of regular products and clothing.
+
+
+Next for each of our clothing we are gonna display the size chart link on the page. 
+
+So, we will download the sizechart link from the video description:
+
+images-> clothing-size-chart
+
+
+Now, lets display the clothing-size-chart on the page.
+
+
+amazon.js
+______________
+
+
+Underneath the quantity selector,
+
+
+If we have a Clothing, we are going to display a size chart link. So, one way we can do this is to use if statement or ternary operator. 
+
+${
+  product instanceof Clothing 
+    ? `<a href="${product.sizeChartLink}">Size Chart</a>`
+    : '';
+}
+
+however, we are gonna learn different way to do this using inheritance.
+
+So, we are gonna create a new method on the Clothing class. That's gonna generate the HTMl that we need here below the quantity selector on the amazon.js file 
+
+
+products.js
+______________
+
+class Clothing extends Product{ //Clothing will inherit every method and property from the product class
+  sizeChartLink;
+
+  constructor(productDetails) {
+    super(productDetails); // calls the constructor of the parent class i.e. Product
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+  extraInfoHTML() { // So, this method will generate some html that contains some extra information about this product 
+    return `
+      <a href="${this.sizeChartLink}" target="_blank"> 
+        Size chart 
+      </a> 
+    `;
+  }
+}
+
+
+amazon.js
+----------
+
+Below quantity selector
+
+${product.extraInfoHTML()} 
+
+before running this code there is 1 thing that we need to fix. Currently clothing class only has this method if it is just a regular product it is not gonna have the class and its gonna cause an error. To fix this we are also gonna create this on the Product class.
+
+
+class Product {
+  ...
+  ..
+  .
+  
+  extraInfoHTML() {
+    return '';
+  }
+}
+
+At the regular product we dont have abny extra info that we want to display. so, lets just return an empty string.
+
+So, now if we call extraInfoHTML it doesn't matter if its a product or a clothing.
+
+
+amazon.js
+______________
+
+When we call extraInfoHTML:
+
+product.extraInfoHTML() 
+
+We dont know which class it is. This might be a clothing class or it might just be product class. This technique is called polymorphism.
+
+Polymorphism =  use a method without knowing the class
+
+
+
+
+
+Built-in Class
+________________
+
+new Date() = this class generates an object that represents the current date 
+
+
+const date = new Date();
+console.log(date);
+
+IN the console this represents the current date and time. So, this object has properties and methods that we can use that are related to date.
+
+Every date object has a method called:
+
+.toLocaleTimeString() = gives the current time 
+
+
+
+We use external library dayjs(); earlier on the project.
+
+DayJS uses the Date class behind the scenes. 
+However, DayJS gives us a lot of extra features.
+So, we use DayJS instead of Date directly 
+
+
+
+More details about "this"
+
+-> Inside an object we can use a value "this" and "this" will point to the outer object. So, "this" lets an object access its own properties. 
+
+-> In JS "this" can be used anywhere in our code.
+
+Eg:
+
+console.log(this); -> using it outside of any object 
+There's no object for "this" to point to 
+this = undefined 
+
+In console it will show undefined.
+
+
+Originally in JS, this = window 
+So, when they released JS modules, inside a module, this = undefined
+
+
+-> const object2 = {
+  a: 2,
+  b: this.a // at this point obj2 has not been created yet. So, this does't have anything to point to and this=undefined
+}
+
+If we save and see it will give us error because this is undefined 
+
+
+
+If, we are inside a method we can use "this" and it will point to the object. If we are outside of an method there is no object to point to and this = undefined 
+
+
+
+
+Use "this" inside a function 
+
+-> function logThis() {
+  console.log(this);
+}
+
+NOt inside of any object, so there's nothing for "this" to point to. So, this = undefined 
+
+If we try to run the function:
+
+logThis(); 
+
+In the console, it will show us undefined.
+
+
+
+"this" actually has a special feature,
+-> Inside a function, we can change "this" to whatever we want. To do that function have a method called .call();
+
+logThis.call()-> so, .call runs the function but we can set the value of "this"
+
+logThis.call('hello') -> the 1st value that we give is gonna be the value of "this". Now, this is gonna be  hello 
+
+In the console we will see hello.
+
+So, thats the special feature of "this". Inside a function, we can chnage "this" to whatever we want using a method like .call() 
+
+So, .call() is same like calling or running a function.
+
+
+
+
+-> Arrow functions do not change the value of "this"
+
+const object3 = {
+  method: ()=> {
+    console.log(this); 
+  }
+}
+
+Here, "this" will have the same value as outside the arrow function. "this" keeps the value that it had outside the arrow function.
+
+Eg:
+
+console.log(object3.method()); -> undefined as outside the object "this" is also undefined.
+
+
+
+
+Summary of "this"
+
+1. Inside a method, "this" points to the outer object 
+2. Inside a function this=undefined 
+BUt we can change it to whatever we want using .call()
+3. Arrow function do not change the value of "this"
+
+
+In this Lesson:
+
+1. OOP = organize our code into objects 
+2. Use a function to generate objects 
+3. Classes
+4. Private properties and methods
+5. Inheritance
+6. Method overridding and Polymorphism
+7. More details about "this"

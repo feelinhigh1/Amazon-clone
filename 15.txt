@@ -1,0 +1,978 @@
+-----External Libraries, MVC, Finish the checkout page-------
+
+External Libraries
+-> External Librarries is basically a code that is outside of our project
+
+So,far we have been using the code that is inside of our project.
+
+So, lets load our 1st external library.
+
+https://github.com/SuperSimpleDev/javascript-course/blob/main/3-links.md -> Lesson 15
+
+Hello external Library : https://unpkg.com/supersimpledev@1.0.1/hello.js
+
+So, this is called an external library. It's the code that is outsie of our project.
+
+So, the cool thing is we can impoort this code from the internet.
+
+
+<script src="https://unpkg.com/supersimpledev@1.0.1/hello.js"></script>
+
+So, now the computer will get all the JS code from the pageand load into our project like normal code.
+
+
+
+Q. Why we use external libraries?
+-> let us share code
+-> save time
+-> avoid duplicating work
+
+
+So, now lets import complex code to see how we can save time and work.
+
+
+Checkout page 
+______________
+
+Here we have an option for choosing the delivery option. We see each option has a date. So, that is the date the product should be delivered by. So, the way this works is the cheapest option takes 7 days to deliver. $4.99 takes 3 days to deliver. $9.99 takes 1 day to deliver.
+
+
+To get these dates 
+___________________
+1. Get today's date 
+2. Do Calculations (add 7 days,....)
+3. Display the date in easy-to-read format 
+
+We can figure out this by writing the code ourselves but its gonna be a lot of work. Instead we can use an external library to help us work with dates. So, in this code we are gonna use external library called DayJS. This is an popular library that helps us with dates. 
+
+DayJS External Library -> https://unpkg.com/dayjs@1.11.10/dayjs.min.js
+
+
+
+
+checkout.html 
+_______________
+
+<script src="https://unpkg.com/dayjs@1.11.10/dayjs.min.js"></script>
+
+DayJS external library creates a function called dayjs().
+
+checkout.js
+______________
+
+import ....
+
+console.log(dayjs());
+
+And we will see dayjs function gives us an object and this object represents the current date and time.
+
+
+Now, lets learn how to use dayjs.
+External libraries usually have the documentation page. That show us how to use the library.
+
+
+1. Get today's date 
+-> lets use dayjs to get today's date. According to the documentation to get the current date and time we can just use the dayjs function. 
+
+const today = dayjs();
+
+2. Do calculations (Add 7days, ....)
+-> 
+const deliveryDate = today.add(7, 'days');
+
+Now, the add method takes 2 parameters:
+
+i. The no. of time we want to add. If we want to add 7 days we will type 7.
+ii. 2nd parameter is the length of time that we want to add. If we want to add days then we will type 'days'.
+
+So, this will add 7 days to todays date.
+
+
+3. Display the date in easy-to-read format.
+-> According tio dayjs documentation it has another method called format() which will display the date in easy to read format.
+
+deliveryDate.format('dddd, MMMM D')
+
+So, this will take the date and convert it into the our required format.
+
+dddd -> this will display the actual day of the week
+MMMM -> display the full month name 
+D -> Day of the month 
+
+
+The above code will show the date in the format -> Saturday, September 14 -> which is 7 day after todays date.
+
+
+
+SO, thats how we use dayjs external library to help us with dates and helps us save a lot of time and work. And we don't need to figure out ourselves and use others code to solve the problem.
+
+
+
+Best Practice
+______________
+
+When we need to do something complicated, 
+  - Try to find an external library 1st 
+  - Before writing the code ourselves.
+
+
+How to find external libraries
+________________________________
+
+1. javascript date library 
+2. use an ai tool to find an external library.
+
+
+
+
+Next we will learn how to use external library and JS module together 
+
+checkout.html
+______________
+
+We can see that we are loading the libraries using the script tags. The problem with the script tags is that it runs the code directly on the page. And, this might cause naming conflicts. 
+
+So, the better way to load the externaln libraries is to use the modules. Because the module will contain a code inside a file and any variable that is created inside a file will not conflict with anything outside the file.
+
+To use external libraries with JS module together we are gonna use the special verison of the library called the ESM version.
+
+ESM version
+______________
+
+ESM = EcmaScript Module 
+
+EcmaScript is just another name for javascript
+
+So, ESM version of the library is just a version that works with the JavaScript Modules.
+
+
+
+Eg:
+
+We will go to:
+
+Links for each lesson: https://github.com/SuperSimpleDev/jav...   ->    Hello (ESM version): https://unpkg.com/supersimpledev@1.0.1/hello.esm.js
+
+
+SO, we can see that it is the exact same code as before we are creating a function called hello. and this time we added export in front of the function. 
+
+So, that turn the library into the ESM version and now, it will work with JS modules.
+
+So, lets use the ESM version in our code.
+
+
+
+checkout.html
+______________
+
+Now, we will not use script tags to load this anymore. So, we delete the script tags.
+
+
+checkout.js
+_____________
+
+Now, we are gonna use the import to import the function into our code.
+
+import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
+
+So, this import works same as before except now the code is coming from the internet rather than 1 of our files. 
+
+So, thats how we use external libraries in JS modules together. We just load the esm version of the library and we use import as normal except we are importing the code that is from the internet.
+
+
+Next use DayJS with JS modules. To do that we are gonna load the exm version of DayJS
+
+Links for each lesson: https://github.com/SuperSimpleDev/jav...   ->   DayJS (ESM version): https://unpkg.com/dayjs@1.11.10/esm/index.js
+
+
+Now, we will load this project in our project.
+
+checkout.html
+_______________
+
+There we will remove the script tag:
+
+<script src="https://unpkg.com/dayjs@1.11.10/dayjs.min.js"></script>
+
+Because we are gonna load it with JS module.
+
+
+
+checkout.js
+_____________
+
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+
+
+So, thats how we use dayjs external library with JS modules. So, before we start we are gonna learn the new syntax that we used here. 
+
+So, this syntax is called: 
+
+Default Export
+_______________
+
+- another way of exporting something from a file 
+- we can use it when we want to export only one thing from a file 
+
+
+Lets take a eg of default syntax to see how it works.
+
+We are gonna go to the utils folder and open money.js file 
+
+money.js 
+__________
+
+At bottom we are gonna type:
+
+export default formatCurrency;
+
+And when we import these we can just import name without the curly brackets:
+
+import formatCurrency from './utils/money.js';
+
+Note:
+1. Each file can have only 1 defauly export. So, if we want to export only 1 thing from the file this is another syntax that we can use.
+
+So, some people like using default exports because they feel exporting only 1 thing from a file makes the code cleaner.
+
+However, its upto you which version of export you want to use.
+
+
+
+checkout.js
+_____________
+
+The dayjs library only exports one thing which is the dayjs function.
+
+So, they chose to use the default export instead of the normal export that we were using before. 
+
+The import syntax with the curly brackets are called Named Export. So, when we use external libraries in future. Some libraries will use named export and other libraries will use the default export. So, it useful to know both syntaxes.
+
+So, thats how we use external libraries in JS modules together. We just import from the esm verison of the library.
+
+Now, keep in mind that every external library doesn't have an ESM version. So, for some of the libraries we still have to use the script tag.
+
+Now, So, that we have learn external libraries lets learn so some practical exercises.
+
+
+So, 
+
+In the checkout page we will use the dayjs external library to create the delivery option.
+
+So, the way the delivery option works is that we can select one of the given three delivery options. When we click an option. It should change the delivery option up delivery date and should change the prices on the order Summary.
+
+So, lets get started:
+
+1. Save the data 
+___________________
+
+What data we need to save for the delivery option section?
+-> Each delivery option has delivery time like 7 days or 3days. And Each option also has a price.
+
+Right now our cart looks like:
+
+cart = [{
+  productId: '......',
+  quantity: 2
+},{
+  productId: '......',
+  quantity: 1
+}]
+
+
+Now, we could save the delivery option details inside the cart like this:
+
+
+cart = [{
+  productId: '......',
+  quantity: 2,
+  delievryTime: '3 days',
+  deliveryPrice: 499
+},{
+  productId: '......',
+  quantity: 1,
+  delievryTime: '3 days',
+  deliveryPrice: 499
+}]
+
+However, notice that this data gets duplicated for Each product in the cart. Instead we are gonna save the delivery options seperately.And, then just save the id that points to the delivery option. As, a reminder this technique is known as normalizing the data. 
+
+We save the delivery options seperately and then we just save an id that points to the full delivery option.
+
+Eg:
+
+cart = [{
+  productId: '......',
+  quantity: 2,
+  deliveryoptionId: '1'
+},{
+  productId: '......',
+  quantity: 1,
+  deliveryoptionId: '2'
+}]
+
+deliveryOptions = [{
+  id: '1',
+  delievryTime: '3 days',
+  deliveryPrice: 499
+},{
+  id: '2',
+  delievryTime: '3 days',
+  deliveryPrice: 499
+}]
+
+
+
+
+1. Save the data
+________________________
+
+
+
+
+So, lets create the data for the deliveryOptions.
+
+data folder -> deliveryOptions.js
+
+And here we will keep the list of deliveryOptions that we can pick from
+
+const deliveryOptions = [{
+  id: '1',
+  deliveryDays: 7,
+  priceCents: 0
+},{
+  id: '2',
+  deliveryDays: 3,
+  priceCents: 499
+},{
+  id: '3',
+  deliveryDays: 1,
+  priceCents: 999
+}]
+
+So, now that we have created our deliveryOptions. For each product in the cart we are gonna save the Id of the deliveryOptions thats selected.
+
+
+cart.js
+__________
+
+So, in the default cart, we are gonna save the deliveryOptionId. So, lets say that the 1st product selected the 1st delivery option. So, we are gonna save the id 1. And lets say for the 2nd product we save the id 2.
+
+if(!cart) {
+  cart = [{
+    ...,
+    ...,
+    deliveryoptionId : '1'
+  },{
+    ...,
+    ...,
+    deliveryOptionId : '2'
+  }]
+}
+
+Next when we add a product to the cart we also need to give it a deliveryOptionId.
+
+
+In addToCart function. We are adding a product to the cart. So, when we add a new product to the cart. We also want to give it a deliveryOptionId 
+
+
+cart.push({
+  productId,
+  quantity: 1,
+  deliveryOptionId: '1'
+})
+
+So, for new products lets give it a default value of deliveryOptionId : '1'. So, the new products will be selecting the 1st delivery Option.
+
+And, lastly we might have a cart that is saved in a local storage. So, we need to add the deliveryOptionId to localStorage as well. But to keep the thing simple lets use the shortcut. We are gonna delte the cart in localStorage and then it will go back into using the default value which has the deliveryOptionId. So, to delete the cart from the localStorage we will do from the console
+
+In console we will type:
+
+localStorage.removeItem('cart');
+
+
+So, thats how we save the data for the deliveryOptions.
+
+
+
+2. Generate the HTML 
+________________________
+
+In checkout.js we have generated an html where there is a div with class name delivery-option.
+
+So, instead of writing the code directly we are gonna generate it using the JS. 
+
+To make our code organized lets create a function for generating this HTML. 
+
+
+
+function deliveryOptionsHTML() {
+
+}
+
+
+
+Inside here we are gonna do 3 steps:
+_______________________________________
+
+1. Loop through deliveryOptions we created earlier 
+2. For each option generate some HTML 
+3. Combine all the HTML together 
+
+____________________________________________________________
+
+
+
+first, lets import the deliveryOptions
+
+import { deliveryOptions } from '../data/deliveryOption.js';
+
+
+NOw,
+
+1. Loop thrpough the deliveryOptions
+
+function deliveryOptionsHTML() {
+  deliveryOptions.forEach((deliveryOption)=>{
+
+  })
+}
+
+
+2. Now, for each delivery option we are gonna generate some html.
+
+function deliveryOptionsHTML() {
+  deliveryOptions.forEach((deliveryOption)=>{
+    `
+        <div class="delivery-option">
+          <input type="radio"
+            class="delivery-option-input"
+            name="delivery-option-${matchingProduct.id}">
+          <div>
+            <div class="delivery-option-date">
+              Monday, June 13
+            </div>
+            <div class="delivery-option-price">
+              $9.99 - Shipping
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  })
+}
+
+
+Now, when we are generating the HTML instead of using the same day and date everytime we are gonna calculate the date by using dayjs and insert it.
+
+To calculate the date we are gonna get today's date using dayjs 
+
+So, 
+
+function deliveryOptionsHTML() {
+  deliveryOptions.forEach((deliveryOption)=>{
+    const today = dayjs();
+    const deliveryDate = today.add(
+      deliveryOption.deliveryDays,
+      'days
+    )
+  })
+}
+
+According to the documnetation to get todays date we just call the dayjs() function.
+
+Each deliveryOption takes certain amount of days to deliver. So, we need to add that to todays date. To do that we have the method called .add()
+
+const deliveryDate = today.add()
+
+And we will give it 2 parameters. The 1st parameter is how many days we want to add and this is saved in the deliveryOption. So, here we will give it :
+
+const deliveryDate = today.add(
+  deliveryOption.deliveryDays,
+  'days'
+);
+
+2md parameter is the length of time that we want to add. 
+
+Now, that we calculated the correct deliveryDate. We need to display it in the easy to read format.
+
+
+
+And again day js has a method called format. 
+
+
+const dateString = deliveryDate.format(dddd, MMMM D);
+
+So, now we calculated this dateString we are gonna insert it into the HTML instead of using the same date everytime. 
+
+So, instead of 
+
+Monday, June 13 -> ${stringDate}
+
+
+Now, lets insert the price because it will be different everytime. 
+
+const priceString = ;
+
+Remember, every deliveryOption has a propert called priceCents.
+
+If priceCents is 0. we want to display the text free.
+If priceCents is not 0 we want to diaplt the price as dollars. So, to do that lets practice using a ternary operator. So, we will check if th epriceCents is 0.
+
+So, 
+
+const priceString = deliveryOption.priceCents === 0
+  ? 'Free'
+  : `$${formatCurrency(deliverOption.priceCents)} -`;
+;
+
+So, how ternary operator works is that if the first part returns true the value is whatever is after ? (question mark) and if the value is false, the value is whatever is after : (colon). So, it is sort of like if statement 
+
+So, thats how we create priceString for each deliveryOption.
+
+Now, lets substitute into the HTML. 
+
+So, instead of:
+
+$9.99 - Shipping   --->  ${priceString} Shipping 
+
+
+Now, instead of using same value everytime we are substituting the values into the HTML. 
+
+
+Now, finally lets:
+
+
+3. Combine the HTML together 
+
+So , in the function deliveryOption outside the loop we are gonna create a variable to save the result.
+
+
+let html = '';
+
+And then everytime we loop through we are gonna add this HTML to the result.
+
+
+html += `.....`;
+
+And finally when we created the html we are gonna return it from the function. 
+
+So, at the bottom of the function we are gonna type:
+
+
+return html;
+
+Now, that we generated the html for the deliveryOptions lets insert it into the cart Summary HTML.
+
+cartSummaryHTML += `
+  ...
+  ...
+  ${deliveryOptionsHTML(matchingProduct)}
+`
+
+Now , before we save one thing taht we are missing in the function is that in the deliveryOptionsHTML function we are using a variable called matchingProduct. But the variable is not accessible inside the function. 
+
+So, lets pass the matching product in the deliveryOptionsHTMl function. 
+
+
+So,
+
+function deliveryOptionsHTML(matchingProduct) {
+
+}
+
+And , also while callingthe function we are gonna pass it the matchingProduct:
+
+${deliveryOptionsHTML(matchingProduct)}
+
+So, now we are generating the HTML for the deliveryOptions. And the delivery Dates will be based on todays date.
+
+
+
+Now, one thing we need to fix is that the delivery-option selectors are empty. However we want the deliveryOption that is saved in the cart to be selected.
+
+In order to make one of the selectors selected:
+
+function deliveryOptionsHTML(matchingProduct, cartItem) {
+  ....
+    ....
+    const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
+    html += `
+    <div class="delivery-option">
+      <input type="radio"
+      checked
+        class="delivery-option-input"
+        name="delivery-option-${matchingProduct.id}">
+      <div>
+        <div class="delivery-option-date">
+          ${dateString}
+        </div>
+        <div class="delivery-option-price">
+          ${priceString} Shipping
+        </div>
+      </div>
+    </div>
+    `
+  }
+  return html;
+
+
+
+In the input element we are gonna add an attribute called checked and this attribute makes the selector checked. However we dont want all of the selectors to be checked. We only want it to be checked if it matches the deliveryOptionId on the cart. 
+
+So, above the input element we wrote some code to see which deliveryOption should be checked.
+
+
+
+const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
+
+
+
+
+And, we only want it to be checked if the deliveryOption id matches the deliveryOption id on the cart. 
+
+But inside the function we dont have access to cartItem So, lets pass it in as parameter. And also when we call the function.
+
+function deliveryOptionsHTML(matchingProduct, cartItem) {
+  ...
+}
+
+deliveryOptionsHTML(matchingProduct, cartItem);
+
+
+So, now that we have isChecked variable. Instead of being checked everytime we are gonna remove and insert:
+
+<input type="radio"
+  ${isChecked ?'checked' : ''}
+>
+
+ternary operator in there. So, we can also use a ternary operator when we are inserting into a string.
+
+
+Now we can see that the correct deliveryOption is cheecked for each product. 
+
+
+
+
+Now, finally lets replace the date at the top with the delivery date that we selected here. 
+
+
+We will calculate the delivery date using the deliveryOption that we picked. So, remember inside the cart we only saved deliveryOptionId. So,lets use this to get the full delivery Option.
+
+
+const deliveryOptionId = cartItem.deliveryOptionId;
+
+let deliveryOption;
+
+deliveryOptions.forEach((option)=>{
+  if(option.id === deliveryOptionId) {
+    deliveryOption = option;
+  }
+});
+const today = dayjs();
+const deliveryDate = today.add(
+  deliveryOption.deliveryDays,
+  'days'
+);
+const dateString = deliveryDate.format('dddd, MMMM D');
+
+cartSummaryHTML +=  `
+  <div class="cart-item-container 
+  js-cart-item-container-${matchingProduct.id}">
+    <div class="delivery-date">
+      Delivery date: ${dateString}
+    </div>
+    ....
+  </div>
+
+
+Now, we have the full deliveryOption in our code and we can use it to get the deliveryDays property and calculate the day that we need here. 
+
+
+To calculate the date we have already written the code below.
+
+When we creates the deliveryOptions we calculated the date for each deliveryOption. So, we can reuse the code above.
+
+So, that code will take the deliveryOption that we selected and calculate the delivery date that we need to show. 
+
+Now, using same date every time we will insert ${dateString}
+
+Now, it will match the selected date.
+
+
+SO, thats hiw we generate the HTML for the deliveryOptions using dayjs external library.
+
+
+
+
+Now, last step is to make it interactive
+
+
+3. Make  it interactive 
+
+So, when we click a deliveryOption we need to do 2 things:
+
+i. update deliveryOptionId in the cart 
+ii. Update the page 
+
+We need to update the date at the top that we selected 
+
+
+
+Lets start with 1st step 
+
+i. update deliveryOptionId in the cart 
+->
+
+lets create the function for updating the deliveryOptionId in the cart 
+
+cart.js
+__________
+
+When we update the deliveryOption we need to know the product that we wanna update as well as deliveryOption that we chose. SO, we need 2 things for it.
+
+productId, deliveryOptionId
+
+Steps 
+______
+
+1. Loop through the cart and find the product 
+2. Update the deliveryOptionId of the product
+
+export function updateDeliveryOption(productId, deliveryOptionId) {
+  let matchingItem;
+  cart.forEach((cartItem)=>{
+    if(productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
+  });
+  matchingItem.deliveryOptionId = deliveryOptionId;
+
+  saveToStorage();
+}
+
+
+checkout.js
+_____________
+
+WE need to add Event listener to each of the delivery options So we run some code when we click it.
+
+IN the html for each deliveryOption
+
+<div class="delivery-option js-delivery-option"></div>
+
+
+Now, we will add event listener to this 
+
+document.querySelectorAll('.js-delivery-option')
+  .forEach((element)=>{
+    element.addEventListener('click',()=>{
+      updateDeliveryOption(productId, deliveryOptionId);
+    })
+  })
+
+
+This much with the notes...
+Now, only very imp will be written.
+
+
+
+ShortHand Property:
+const {productId, deliveryOptionId} = element.dataset;
+
+
+
+1. Update the deliveryOptionId in the cart
+2. Update the page.
+
+
+to update the page instead of using the dom:
+i. we update the data 
+ii. Regenerate all the HTML 
+
+The above technique is called MVC 
+Model-View-Controller
+
+MVC
+____
+
+Split our code into 3 parts 
+
+1. Model= saves and manages the data 
+2. View = takes the data and displays it on the page.
+3. Controller = runs some code when we interact with the page.
+
+
+They interact with each other in a loop. 
+
+We use MVC as it makes sure the page always matches the data. 
+
+MVC is a design pattern.
+
+
+We create 2 new file s for the checkout page with orderSummary.js and paymentSummary.js
+
+
+
+
+____________________________________________________________
+
+
+PaymentSummary.js
+
+Here we start by creating:
+
+function renderPaymentSummary() {
+
+}
+
+
+
+As always:
+
+Main Idea of JS
+___________________
+
+1. Save the data (M)
+2. Generate the HTML
+3. Make it interactive
+
+
+
+To calculate the price of the item:
+
+1. Save the data
+
+
+Steps  for product price
+________________________________
+
+1. Loop through the cart 
+2. For each product, price * quantity 
+3. Add Everything together 
+
+
+
+Steps for shipping price
+___________________________
+
+1. Loop through the cart. 
+2. Add all the shipping costs together.
+
+
+Steps for calculating total before tax
+_______________________________________
+
+1. Adding product price and shipping price together
+
+
+Steps for calculating tax
+___________________________
+
+1. multiply total before tax with 0.1
+
+
+____________________________________________________________
+
+
+2. GENERATE THE HTML (View)
+
+const paymentSummaryHTML = `
+  ...
+  ...
+  ...
+`
+
+then we will insert the above price data.
+
+There is a small problem that occurs in theformatCurrency function. utils-> money.js 
+
+.toFixed() method has a samll problem with rounding 
+So, for some numbers that end in 5 wont round properly.
+
+6.005.toFixed(2) => '6.00'   X
+6.005.toFixed(2) => '6.01'   Correct
+
+So, to fix this we round the priceCents 1st.
+
+export function formatCurrency(priceCents) {
+ return (Math.round(priceCents)/100).toFixed(2);
+}
+
+
+____________________________________________________________
+
+3. Make it interactive (controller)
+
+
+One thing we can make interactive in the payment section is place your order button. But we haven't figured out how the order works. So, we will work on it on the next lesson.
+
+Another thing that we can make interactive is when we delete an item the payment section should also change the prices. 
+
+
+
+orderSummary.js
+_______________
+
+go to the code where there is eventListener for the deleteLink
+
+1. when we click delete we are gonna update the data.
+-> we already update the data using the removeFromCart(productId) function.
+
+2. Regenerate all the HTML 
+-> So, to regenerate the html for the payment summary we have created a function called renderPaymentSummary() in the paymentSummary.js file.
+
+SO, we import the renderPaymentSummary() function into orderSummary.js file and we will use the function in the deleteLink eventListener. 
+
+Similarly we will do same for the deliveryoption when we change it.
+
+
+In this lesson:
+
+1. External Libraries = code outside of our project.
+
+2. DayJS external library
+
+3. External Libraries + JS modules, default export 
+
+4. Created delivery section
+
+5. MVC = Model-View-controller which is the better way to design our code.
+
+6. Created the payment section.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

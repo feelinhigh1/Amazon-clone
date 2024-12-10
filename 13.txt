@@ -1,0 +1,696 @@
+Start the amazon project and intro to Git 
+____________________________________________
+
+
+https://supersimple.dev/projects/amazon/
+
+About the project:
+
+So, this is gonna be the project that we are gonna build in this course. This is an e-commerce webiste that looks like amazon where we can see list of projects on the home page and then we can add this products to a cart and see the cart by clicking on the top right and in this page it will show us the products and also show us the cost of the order including shipping and taxesand once we are ready to create an order and we can place the order and it will take us to the another page which will show us our past orders. We can also treack our order by clicking track package button and will again take us to another page which shows us the progress of our order showing preparing shipped and delivered.
+
+So, thats the overview of the project we are gonna build.
+
+THis is a complex multipage website where the diff pages interact with each other to create a full app. 
+
+The 1st thing we do is to download the starting code for this project.
+
+We are gonna create a new tab on our browser 
+
+and type:
+
+https://github.com/SuperSimpleDev/javascript-amazon-project
+
+and downlaod the files from there as this code is based on JS we will start the code alreday with HTML and CSS as if we start from 0 it will take a lot of time.
+
+
+amazon.html -> corresponds to the home page of the https://supersimple.dev/projects/amazon/
+
+
+Now, lets see the code that we have to start with. All we have is the HTML and CSS for this website there is currently no JS at all. 
+
+One thing we notice that we can create almost all of the website using just HTML and CSS.
+We acutually do not need JS to create all of this.
+
+We can create header and 3 products to start with.
+HTML and CSS can create everything we see visually on the website.
+
+JavaScript makes the website interactive.
+
+If we click on the add to cart it looks pretty nice but it doesnot do anything and thats because we havent added JS yet.
+
+Now, before going to the JS we are gonna learn about Git.
+
+
+
+---------------Git-----------------------
+
+Git = track changes in our code 
+and lets us easilt undo our changes
+and this technology is very imp in big projects like this amazon project.
+
+Q. How to setup and use git?
+->
+1. Install git
+2. Setup git 
+by going to source control and clicking initialize repository
+or going to the terminal and typing git init
+
+Repository = a folder where changes are being tracked
+
+By clicking initialize repository this turns the current folder(amazon-project) into a repository and now all the changes inside the folder will be tracked by git.
+
+
+3. Configure a username and email with git
+
+Open New terminal
+
+git config user.name "SushanPoudel"
+git config user.email "sushan.poudel.242833@gmail.com"
+
+
+4. Save the changes into git 
+
+So, git will start tracking any new changes that we make 
+
+To save the changes we are gonna :
+
+Source control -> Type something in the message 
+
+So, lets type the message Add the starting files
+
+then click commit
+
+and, that will take all our changes and save in git
+
+So, now we have save those changes into git, any new changes that we had will appear in the source control.
+
+We can also undo all the changes that we made.
+
+___________________________________________________________
+
+Now, that we have setup the git we will start the amazon project 
+
+
+-------------Start the Amazon Project------------------
+
+amazon.html
+
+SO, we will start by creating list of products on the home page. Now, we start with 3 projects but in our final project there are many items and also we are gonna make it interactive when we click add to cart.
+
+___________________________________________________________
+
+Main Idea of JS
+________________
+
+1. Save the data
+2. Generate the HTML
+3. Make it interactive 
+
+____________________________________________________________
+
+
+Lets go through all 3 steps to make the list of items.
+
+
+1. Save the data
+_____________________ 
+
+
+So, right now we have 3 products on the page to start with and we are gonna add more products to this page. So, lets start by finding HTML for one product because we can just copy and paste to create another one.
+
+The code is the div with the class product-container.
+
+Now, to add another project on the page 
+-> One thing we can do is to take the div with product-container class and make the copy at the bottom of the page. 
+However, this is not a good idea because if we add lots of products we are gonna be copying this html over and over again and if we expand the (product container div) we can see that each product has a lot of HTML code. So, we dont want to copy that over and over again. It's gonna be lot of code and gonna be hard to manage.
+Instead another strategy is to generate this HTML code using JS.
+
+
+Before that lets add JS to the page.
+So, we create a JS folder name scripts
+and we will add a new file named amazon.js 
+which will bw the js file for amazon.html file 
+
+
+amazon.js 
+__________
+
+Now, we will generate all this HTML using JS instead
+
+So, the 1st step in our process is to save the data 
+
+data = information 
+
+In this case, data is the information about our products. For eg: product name, price, rating, and image.
+
+So, right now the information about the products or the data is inside our HTML (div with class product container).So, what we need to do is to take those data and save it inside our JS. So, that our JS can use it.
+
+
+Now, lets move the data in our JS.
+
+
+Lets create a variable to save the data.
+
+const products =
+
+And, we want to create something that closely matches to our data. So, in this case we have list of products. So, we are gonna create an array. As, array represents a list. And each product on the list has many values like image, name, price. So, we are gonna use image to represent each product. Because an object groups multiple values together. 
+
+
+const products = [{
+
+}]
+
+Inside the object we are gonna save the data for the 1st product. But 1st lets find our code in the html. We are gonna search for products name by typing (command+F) and we will search for black and gray and it will take us to the code for the 1st product.
+
+This is the name of the 1st product, now, lets get the image of the 1st product by scrolling and saveit in our JS. 
+
+Now, inside the object lets create a property called image. and we will save the image of the 1st item that we copied from the html file. In the image property we will paste the link of the image inside a string '.....'
+
+const products = [{
+  image : 'images/products/athletic-cotton-socks-6-pairs.jpg',
+}]
+
+So, we saved image inisde JS.
+
+
+Similarly we save name in JS using property called name.
+
+
+Next, we are gonna save the rating in our JS using called rating.
+For rating there are actually 2 parts, the stars and the number of ratings that it has. So, lets group these two values into an object because these two values are related to each other.
+
+const products = [{
+  image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
+  name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
+  rating; {
+    stars: 4.5,
+    count: 87
+  }
+}]
+
+
+Similarly, we can save price in JS using the property price. However, JS has problems doing math with decimal numbers or floats. So, best practice in calculating money is calculating in cents. So we will save price as cents.
+
+Note: 1 dollar = 100 cents 
+So, 10.90 dollar = 1090 cents 
+
+Since, it is in cents. It better to give the property name priceCents.
+
+
+const products = [{
+  image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
+  name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
+  rating; {
+    stars: 4.5,
+    count: 87
+  },
+  priceCents: 1090
+}];
+
+
+Now, we saved all the informationor the data about the 1st product into our JS.
+
+Similarly lets create another object and save the data for the 2nd product and the 3rd product.
+
+const products = [{
+  image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
+  name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
+  rating: {
+    stars: 4.5,
+    count: 87
+  },
+  priceCents: 1090
+}, {
+  ...
+  ...
+},{
+  ...
+  ...
+}]
+
+Now, one really imp thing is to make sure in each of these objects we have the same properties with the same structure so our code could handle each product same 
+
+
+So, thats what means to save the data.
+
+
+We create something in JS that closely matches the data that we have on the page.
+
+By, the way the above code const products = [{.....}] is called data structure because it structures or organizes the data and represents the list of products. So, We usually create arrays and objects to create a data structure in JS
+
+_____________________________________________________________
+
+Since we have save the data. The next step is to use the data to generate the HTML instead of writing the HTML manually.
+
+2. Generate the HTML 
+_____________________
+
+To generate the HTML we can loop through the array 
+
+So, we type the name of the array which is products and loop through the array using a forEach method and create a function and give a parameter called product.
+
+products.forEach((product)=>{
+
+})
+
+
+So, inside the function lets create a variable:
+
+const html = ``;
+
+Inside the above template string we are gonna copy all the html from one of the products.
+
+products.forEach(product) => {
+  const html = `
+  ....
+  ....
+  ....
+  `
+};
+
+
+Lets console.log this html to make sure its working.
+
+We will see that we generated all of this html and we generated 3 of these.
+
+Now, we will use object values inside of the html to generate diff items every time instead of same ones.
+
+products.forEach((product)=>{
+  const html = `
+  <div class="product-container">
+    <div class="product-image-container">
+      <img class="product-image"
+        src="${product.image}">
+    </div>
+
+    <div class="product-name limit-text-to-2-lines">
+      ${product.name}
+    </div>
+
+    <div class="product-rating-container">
+      <img class="product-rating-stars"
+        src="images/ratings/rating-${product.rating.stars * 10}.png"> 
+
+        // eta * 10 kina gareko bhanda kheri hamro rating ko image rakhya folder ma rating-4.5.png bhanera chaina rating-45 bhanera cha ani tyo lyana ko lagi hamile * 10 gareko ho
+        
+      <div class="product-rating-count link-primary">
+        ${product.rating.count}
+      </div>
+    </div>
+
+    <div class="product-price">
+      ${product.priceCents / 100}
+      // price lai cents bata dollar convert garna ko lai 100 le divide gareko
+    </div>
+
+    <div class="product-quantity-container">
+      <select>
+        <option selected value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+    </div>
+
+    <div class="product-spacer"></div>
+
+    <div class="added-to-cart">
+      <img src="images/icons/checkmark.png">
+      Added
+    </div>
+
+    <button class="add-to-cart-button button-primary">
+      Add to Cart
+    </button>
+  </div>`;
+  console.log(html);
+});
+
+So, now in the html that we are generating we are inserting about the details of each product. If we save and console.log the html and look at the html that we generated. We will see that it is different for each of the product. So, thats how we use JS to generate all of the html 
+
+Now, lets step is to:
+-> combine all the html together into one string and put it on the web page.
+
+To combine all the html together. Lets create a variable at the top (before creating the function) for combining all the strings together. 
+
+So,
+
+let productsHTML = '';
+
+Now, each time we go through the loop we are gonna add the html string up in the variable.
+
+Then, instead of creating a new variable inside the function we are gonna add:
+
+productsHTML = productsHTML + `........`
+
+So, this is called the accumulator pattern. We loop through an array and each time we are adding to the result. So, we are accumulating the result.
+
+Now, we are accumulating all the html to the productsHTML. We remove console.log at the bottom. And, after the loop we add console.log(productsHTML)
+
+
+Now, we will put it on the webpage using the dom
+
+To use the dom 1st we will get the html element from the page.
+
+We will use the existing div with class products-grid and also give it another class called js-products-grid
+
+<div class="products-grid js-products-grid"></div>
+
+Now, in our JS code. After the loop we will use the DOM 
+
+document.querySelector('.js-products-grid).innerHTML = productsHTML;
+
+Now, we can delete all the div with the class product-container because we are creating it with JS.
+
+Our products will still be on the page because we have created it using the JS.
+
+
+One problem that we see in the page is that we see only one decimal point but we want 2 decimal points in the price section.
+
+It is because priceCents is 1090 and when we divide by 100 it becomes 10.9 . If we it to have 10.90. We can use a special method  called toFixed() that we can use with a number.
+
+So, inside the loop in the js file.
+
+<div class="product-price">
+  $${(product.priceCents / 100).toFixed(2)}
+</div>
+
+toFixed() will convert a number into a string but we can tell it how many decimal points we want in between the brackets.
+
+
+
+So, benefit of generating the html is that we dont have to copy paste the html in the html file. all we have to do is go up on the data and add a data for a new product.
+
+So, lets add a 4th product to our list
+
+products = [{
+  ...
+},{
+  image: 'images/products/black-2-slot-toaster.jpg',
+  name: '2 Slot Toaster - Black',
+  rating: {
+    stars: 5,
+    count: 2197
+  },
+  priceCents: 1899
+}]
+
+Then it will add product to the page. Just we had to do was add the information about the product and then our loop will handle all HTML for us. So, generating the HTML with JS is lot easier than copy pasting the HTML every time.
+
+Now, we will add all the products. But, in the starting code we alreday have the code that contains all the data in the data folder.
+
+So, we will go to the amazon.html and:
+
+<script src = "data/products.js"></script>
+<script src="scripts/amazon.js"></script>
+
+So, what it does is that it runs the code one by one. 
+1st it will run products.js file and then run amazon.js file and generate the html.
+
+Now, instead of suing our own products array lets just use the products array from the data/products.js file.
+So,from amazon.js file we are gonna delete the array.
+
+
+So, we are 
+loading 2 JS file 
+__________________
+
+1. data/products.js 
+-> It creates all the products
+
+2. scripts/amazon.js
+-> loops through the products and generates the html 
+
+
+Note: remeber that script elements are loaded one by one. So, the order matters. We have to first create the products array and then loop through it.
+
+If they were reversed the code wouldn't work.
+
+This is how real world website is created.
+
+
+
+____________________________________________________________
+
+3. Making it interactive 
+_________________________
+
+Right now if we click the add to cart button, it doesnot do anything.
+
+So, we are gonna add some JS to make it interactive and actually add this product to cart.
+
+In Js file we are gonna add a event listener to the Add to Cart button and before that we give it a new class js-add-to-cart.
+
+document.querySelectorAll('.js-add-to-cart')
+  .forEach((button)=>{
+    button.addEventListener('click',()=>{
+   
+    })
+  })
+
+Now, for the Cart part we will use the seperate file cart.js which will be in the data folder to make our code organized. Each file will focus on 1 particular thing.
+
+Inside cart.js lets create our cart. So, we can just create a variable:
+
+const cart = [];
+
+So, when we click add to cart button how do we add it to the above cart list.
+
+So, we will go back to amazon.js 
+
+To know which product to add in the cart when we click add to cart button we will use Data attribute
+
+So,
+In add to cart button after class we will use:
+
+<button class="...." data-product-name="${product.name}" 
+  Add to Cart
+</button>
+
+
+Syntax for Data Attribute 
+___________________________
+
+-> is just an HTML attribute 
+that means it follows the same syntax rules 
+
+data-product-name="${product.name}
+
+attribute name on the left and the attribute value on the right.
+
+-> One difference is data attribute have to start with "data-"
+
+-> and then we can give any name that we want.
+
+like data-product-name
+
+We have to make sure to seperate with a dash(-). This is also known as kebab-case 
+
+
+
+Purpose of a Data Attribute 
+____________________________
+
+Purpose of a Data Attribute is that we can attach any information to an element, here we attached the product name to the button. But we can also attach the products image or the price and so on.
+
+
+
+Now, so that we attached the products name to the button when we click the button we can actually get the name. And, this will tell which button we should add.
+
+So, in amazon.js and when we click the button we are 1st gonna get the product name from the button using
+
+button.dataset
+
+So, the dataset property basically gives us all the data attributes that are attached to the button. So, now we are able to get the product name. So, we will console.log to see how it looks likes.
+
+document.querySelectorAll('.js-add-to-cart')
+  .forEach((button)=>{
+    button.addEventListener('click',()=>{
+      console.log(button.dataset);
+    })
+  });
+
+This is what dataset property looks like :
+
+  DOMStringMap {productName: 'Intermediate Size Basketball'}
+    productName: "Intermediate Size Basketball"
+    [[Prototype]]: DOMStringMap
+
+
+It give us all the data attributes that are attached to the element. So, in our case we have the product name. Now, this woeks just like an object. So, to access the product name we jus have to type:
+
+console.log(button.dataset.productName);
+
+Now, when click the add to cart button. It will get the data attribute from the button and display in the console.
+
+And, this will tell which product to add on the cart.
+
+So, now we have the product name lets actually put it on the cart.
+
+Now, lets save the product name in the variable:
+
+const productName = button.dataset.productName;
+cart.push({
+  productName,
+  quantity: 1
+});
+
+Since we have alreday created the variable cart in the cart.js file. So, we will simply push the object as we want a product and the quantity.
+
+
+We 1st attached the product name to the button using the data attribute and when we clicked the button we got the product name using button.dataset.productName and added the product to the cart with quantity and productname.
+
+Now, lets console.log(cart) to see how it looks likes
+
+When we add to cart a product we see the product name and quantity of 1. Similarly when we add another product to the cart. We will have 2 products in the cart.
+
+Now, lets try adding the same item again. It doesnot seem nice as the item is repeated twice and each has the quantity 1. But we actually want to do is one item with the quantity of 2 because this is how we are gonna display in the cart page.
+
+So, lets figure out how to do this and we will do step by step.
+
+Steps
+_____
+
+1. Check if the property is already in the cart 
+2. If it is in the cart, we will just increase the quantity 
+3. If its not in the cart, we will add it to the cart
+
+So, lets convert the above code into steps 
+
+1. Check if the property is already in the cart 
+-> One step is that we can loop through the cart and look through a particular product name.
+
+let matchingItem;
+cart.forEach((item) => {
+  if (productName === item.productName) {
+    matchingItem = item;
+  }
+});
+
+So, this is how we figure out. If something is already in the cart.
+
+
+2. If it is in the cart, we will just increase the quantity 
+-> 
+
+if(matchingItem) {
+  matchingItem.quantity++;
+}
+
+We can just write matchingItem because if we find an matching item. It will be an object which will be an truthy value. 
+
+
+3. If its not in the cart, we will add it to the cart
+
+else{
+  cart.push({
+    productName,
+    quantity: 1     
+  })
+};
+
+
+
+Now, there is last one problem that we have to solve here. Its not good to use the productName to identify the product in the cart because in an e-commerce website we might have 2 items with the same productName but from diff brands.
+
+To fix this:
+_____________
+
+-> give each product an id
+-> this id should be unique. So, no 2 product should have the same id.
+
+
+So, lets use an id to identify this products instead of using the name.
+
+
+In the starting code for the project in data/products.js we already have id in the code for each of the products and the id is unique. So, now lets just use this id in our code.
+
+Instead of using the productName in the amazon.js we are gonna use the productID.
+
+
+So, the code looks like :
+
+document.querySelectorAll('.js-add-to-cart')
+  .forEach((button)=>{
+    button.addEventListener('click',()=>{
+      const productId = button.dataset.productId;
+      let matchingItem;
+      cart.forEach((item)=>{
+        if(productId === item.productId){
+          matchingItem = item;
+        }
+      });
+      if(matchingItem) {
+        matchingItem.quantity++;
+      }
+      else{
+        cart.push({
+          productId,
+          quantity: 1
+        })
+      }
+      console.log(cart);
+    });
+  });
+
+
+Now, in the console when we click add to cart we can see that we are saving the productId so that the 2 products withe the same name will be able to be added to the cart
+
+So, thats how we make the add to cart button interactive.
+
+_____________________________________________________________
+
+The last feature that we are gonna create in this lesson is that we are gonna make the cart quantity at the top right interactive. 
+
+Steps 
+__________
+
+1. Calculate the quantity or the total no. of products on our cart 
+2. Put the qunatity on the page.
+
+
+Q. So, how do we calculate the total quantity on the cart?
+-> So, rememeber the cart is an array of objects and each object has a quantity. So, to calculate the total quantity we can loop through the array and add the quantity together.
+
+
+amazon.js
+
+after we update the cart we are gonna calculate the total quantity.
+
+let cartQuantity = 0;
+cart.forEach((item)=>{
+  cartQuantity += item.quantity;
+});
+console.log(cartQuantity);
+console.log(cart);
+
+Now, that we have the total quantity we will put the quantity on the page.(using the dom)
+
+amazon.html
+<div class="cart-quantity js-cart-quantity">0</div>
+
+amazon.js
+document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
+
+Now, the cartQuantity will start from 0 and if we add to cart it will show 1 on the page. 
+
+So, thats how we create the cartQuantity in our final project
+
+
+In this lesson:
+
+1. started the final amazon project
+2. Setup and learned Git
+3. Learned the main idea of JS
+  i. Save the data 
+  ii. Generate the html
+  iii. Make it interactive 
+4. Created list of products on the home page
+5. Made the "Add to Cart" button interactive
+6. Made the cart quantity interactive
